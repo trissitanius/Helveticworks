@@ -1,0 +1,2140 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Helvetic Works — Webdesign, Entwicklung & Hosting</title>
+  <meta name="description" content="Individuelle Websites, die nicht nur schön aussehen, sondern auch performen. Design, Entwicklung und Hosting aus einer Hand." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,900&family=JetBrains+Mono:wght@400;500;700&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #eae6dc;
+      --bg-alt: #d9d4c4;
+      --ink: #111a2e;
+      --ink-soft: #364056;
+      --accent: #d4b078;
+      --accent-soft: #f0e0c4;
+      --line: #c4bda8;
+      --white: #f2eee4;
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'Inter Tight', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius: 2px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+      font-size: 16px;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.05;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* NAV */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.1rem 2.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(234, 230, 220, 0.85);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-weight: 900; font-size: 1.4rem;
+      letter-spacing: -0.03em; font-style: italic;
+      display: flex; align-items: center; gap: 0.55rem;
+      cursor: pointer;
+    }
+    .nav-logo::before {
+      content: ''; width: 10px; height: 10px;
+      background: var(--accent); border-radius: 50%;
+    }
+    .nav-links { display: flex; gap: 2.25rem; list-style: none; align-items: center; }
+    .nav-links a {
+      font-family: var(--font-mono); font-size: 0.76rem;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      position: relative; padding: 0.25rem 0;
+      transition: color 0.3s var(--ease);
+      cursor: pointer;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute;
+      bottom: -2px; left: 0; right: 0; height: 1px;
+      background: var(--accent);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s var(--ease);
+    }
+    .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+    .nav-links a.active { color: var(--accent); }
+    .nav-cta {
+      background: var(--ink); color: var(--bg);
+      padding: 0.65rem 1.25rem !important;
+      border-radius: var(--radius);
+      transition: background 0.3s var(--ease);
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover { background: var(--accent); color: var(--white) !important; }
+
+    .lang-toggle {
+      display: inline-flex; border: 1px solid var(--line);
+      border-radius: var(--radius); overflow: hidden;
+      font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em;
+    }
+    .lang-toggle button {
+      background: transparent; border: none;
+      padding: 0.45rem 0.7rem; color: var(--ink-soft);
+      transition: all 0.25s var(--ease); font-weight: 500;
+    }
+    .lang-toggle button.active { background: var(--ink); color: var(--bg); }
+    .lang-toggle button:hover:not(.active) { color: var(--ink); background: var(--bg-alt); }
+
+    .nav-toggle {
+      display: none; background: none; border: none;
+      font-family: var(--font-mono); font-size: 0.78rem;
+      text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink);
+    }
+
+    main { padding-top: 4.5rem; }
+    .container { max-width: 1400px; margin: 0 auto; padding: 0 2.5rem; }
+
+    /* SECTIONS (pages) */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* TYPOGRAPHY */
+    .eyebrow {
+      font-family: var(--font-mono); font-size: 0.75rem;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--ink-soft);
+      display: inline-flex; align-items: center; gap: 0.65rem;
+    }
+    .eyebrow::before {
+      content: ''; width: 24px; height: 1px; background: var(--accent);
+    }
+    h1, h2, h3, h4 {
+      font-family: var(--font-display); font-weight: 900;
+      letter-spacing: -0.025em; line-height: 0.95;
+    }
+    .display {
+      font-size: clamp(3rem, 9vw, 8rem);
+      font-weight: 900; line-height: 0.88;
+      letter-spacing: -0.045em;
+    }
+    .display em { font-style: italic; font-weight: 900; color: var(--accent); }
+
+    /* HERO */
+    .hero { padding: 6rem 0 5rem; position: relative; }
+    .hero-meta {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding-bottom: 2rem; border-bottom: 1px solid var(--line);
+      margin-bottom: 2rem;
+    }
+    .hero-meta-item { font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); }
+    .hero-meta-item span { display: block; color: var(--ink); font-weight: 500; margin-top: 0.2rem; }
+    .hero-title .line { display: block; }
+    .hero-sub {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; margin-top: 3rem; align-items: end;
+    }
+    .hero-sub p { font-size: 1.15rem; line-height: 1.55; color: var(--ink-soft); max-width: 30em; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.7rem;
+      padding: 1rem 1.75rem;
+      border: 1px solid var(--ink); background: var(--ink); color: var(--bg);
+      font-family: var(--font-mono); font-size: 0.8rem;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      border-radius: var(--radius);
+      transition: all 0.35s var(--ease);
+      cursor: pointer;
+    }
+    .btn:hover { background: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
+    .btn-arrow { display: inline-block; transition: transform 0.35s var(--ease); }
+    .btn:hover .btn-arrow { transform: translateX(4px); }
+    .btn-outline { background: transparent; color: var(--ink); }
+    .btn-outline:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+    .marquee {
+      margin-top: 5rem; overflow: hidden;
+      border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+      padding: 1.5rem 0; background: var(--bg-alt);
+    }
+    .marquee-track {
+      display: flex; gap: 4rem;
+      animation: scroll 40s linear infinite; white-space: nowrap;
+      font-family: var(--font-display); font-style: italic;
+      font-size: 2rem; font-weight: 500; color: var(--ink-soft);
+    }
+    .marquee-track span { display: inline-flex; align-items: center; gap: 4rem; }
+    .marquee-track span::after {
+      content: '✦'; color: var(--accent); font-style: normal; font-size: 1rem;
+    }
+    @keyframes scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* PAGE HEADER */
+    .page-header { padding: 7rem 0 4rem; border-bottom: 1px solid var(--line); position: relative; }
+    .page-header .eyebrow { margin-bottom: 2rem; }
+    .page-header h1 { font-size: clamp(3rem, 8vw, 6.5rem); line-height: 0.9; }
+    .page-header h1 em { font-style: italic; color: var(--accent); }
+    .page-header-intro {
+      margin-top: 2.5rem; max-width: 42em;
+      font-size: 1.2rem; line-height: 1.55; color: var(--ink-soft);
+    }
+
+    .section { padding: 6rem 0; }
+    .section-head {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 3rem; margin-bottom: 4rem; align-items: end;
+    }
+    .section-head h2 { font-size: clamp(2.5rem, 6vw, 4.5rem); }
+    .section-head h2 em { font-style: italic; color: var(--accent); }
+    .section-head p { font-size: 1.1rem; color: var(--ink-soft); line-height: 1.55; max-width: 30em; }
+
+    /* SERVICES */
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .service-card {
+      background: var(--white); border: 1px solid var(--line);
+      border-radius: var(--radius); padding: 2rem;
+      position: relative; transition: all 0.5s var(--ease);
+      overflow: hidden; min-height: 360px;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .service-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 100%; height: 3px; background: var(--accent);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.5s var(--ease);
+    }
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px -20px rgba(21, 19, 15, 0.15);
+    }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-number {
+      font-family: var(--font-mono); font-size: 0.75rem;
+      color: var(--ink-soft); letter-spacing: 0.1em; margin-bottom: 3rem;
+    }
+    .service-card h3 { font-size: 1.75rem; margin-bottom: 1rem; line-height: 1; }
+    .service-card p { color: var(--ink-soft); font-size: 0.95rem; line-height: 1.55; margin-bottom: 1.5rem; }
+    .service-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; }
+    .service-tag {
+      font-family: var(--font-mono); font-size: 0.68rem;
+      padding: 0.3rem 0.6rem; background: var(--bg-alt);
+      color: var(--ink-soft); border-radius: var(--radius);
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+
+    /* CAPABILITIES */
+    .cap-list { border-top: 1px solid var(--line); }
+    .cap-item {
+      display: grid; grid-template-columns: 80px 1fr 2fr auto;
+      gap: 3rem; padding: 2rem 0; border-bottom: 1px solid var(--line);
+      align-items: center;
+      transition: background 0.35s var(--ease), padding 0.35s var(--ease);
+      cursor: default;
+    }
+    .cap-item:hover { background: var(--bg-alt); padding-left: 1rem; padding-right: 1rem; }
+    .cap-item-num { font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent); font-weight: 500; }
+    .cap-item-title { font-family: var(--font-display); font-size: 1.75rem; font-weight: 700; line-height: 1.1; }
+    .cap-item-desc { color: var(--ink-soft); line-height: 1.55; }
+    .cap-item-arrow { font-size: 1.5rem; color: var(--ink-soft); transition: all 0.35s var(--ease); }
+    .cap-item:hover .cap-item-arrow { color: var(--accent); transform: translateX(6px); }
+
+    /* PORTFOLIO */
+    .portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem 2rem; }
+    .portfolio-item { cursor: pointer; transition: transform 0.5s var(--ease); }
+    .portfolio-item:hover { transform: translateY(-4px); }
+    .portfolio-visual {
+      aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden;
+      position: relative; border: 1px solid var(--line); margin-bottom: 1.25rem;
+    }
+    .portfolio-item:nth-child(even) { margin-top: 4rem; }
+    .portfolio-meta {
+      display: flex; justify-content: space-between;
+      font-family: var(--font-mono); font-size: 0.72rem;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--ink-soft); margin-bottom: 0.6rem;
+    }
+    .portfolio-item h3 { font-size: 1.6rem; font-weight: 700; line-height: 1.1; margin-bottom: 0.5rem; }
+    .portfolio-item p { color: var(--ink-soft); font-size: 0.95rem; line-height: 1.5; }
+    .mockup-bg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .mock-1 { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
+    .mock-2 { background: linear-gradient(135deg, #f2eee4 0%, #e0d8c4 100%); }
+    .mock-3 { background: linear-gradient(135deg, #2d1810 0%, #5a3a28 100%); }
+    .mock-4 { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); }
+    .mock-5 { background: linear-gradient(135deg, #f2efe4 0%, #e8ddc4 100%); }
+    .mock-6 { background: linear-gradient(135deg, #2a1a1f 0%, #4a2d2a 100%); }
+
+    /* PROCESS */
+    .process {
+      background: var(--ink); color: var(--bg);
+      padding: 7rem 0; margin-top: 6rem;
+      position: relative; overflow: hidden;
+    }
+    .process::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+    .process .eyebrow { color: rgba(242, 238, 228, 0.5); }
+    .process .eyebrow::before { background: var(--accent); }
+    .process h2 em { color: var(--accent); }
+    .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 4rem; }
+    .process-step { padding-top: 2rem; border-top: 1px solid rgba(242, 238, 228, 0.15); position: relative; }
+    .process-step-num {
+      font-family: var(--font-mono); font-size: 0.75rem;
+      color: var(--accent); margin-bottom: 1.5rem; letter-spacing: 0.1em;
+    }
+    .process-step h4 { font-size: 1.5rem; margin-bottom: 1rem; line-height: 1.1; }
+    .process-step p { color: rgba(242, 238, 228, 0.65); font-size: 0.95rem; line-height: 1.55; }
+
+    /* CTA */
+    .cta-block {
+      padding: 7rem 0; text-align: center;
+      border-top: 1px solid var(--line);
+    }
+    .cta-block h2 {
+      font-size: clamp(2.5rem, 7vw, 5.5rem);
+      max-width: 14ch; margin: 0 auto 2rem; line-height: 0.95;
+    }
+    .cta-block h2 em { font-style: italic; color: var(--accent); }
+    .cta-block p {
+      font-size: 1.15rem; color: var(--ink-soft);
+      max-width: 38em; margin: 0 auto 2.5rem; line-height: 1.55;
+    }
+
+    /* CONTACT */
+    .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; padding: 5rem 0 8rem; }
+    .contact-info h2 { font-size: clamp(2.5rem, 5vw, 3.75rem); margin-bottom: 2rem; }
+    .contact-info h2 em { font-style: italic; color: var(--accent); }
+    .contact-info > p { font-size: 1.15rem; color: var(--ink-soft); line-height: 1.6; margin-bottom: 3rem; }
+    .contact-details {
+      display: flex; flex-direction: column; gap: 2rem;
+      border-top: 1px solid var(--line); padding-top: 2.5rem;
+    }
+    .contact-detail .label {
+      font-family: var(--font-mono); font-size: 0.75rem;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--ink-soft); margin-bottom: 0.5rem; display: block;
+    }
+    .contact-detail .value { font-family: var(--font-display); font-size: 1.6rem; font-weight: 500; }
+    .contact-detail .value a {
+      border-bottom: 1px solid var(--line);
+      transition: border-color 0.3s var(--ease), color 0.3s var(--ease);
+    }
+    .contact-detail .value a:hover { color: var(--accent); border-color: var(--accent); }
+
+    .contact-form {
+      background: var(--white); border: 1px solid var(--line);
+      padding: 3rem; border-radius: var(--radius); position: relative;
+    }
+    .contact-form::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 60px; height: 3px; background: var(--accent);
+    }
+    .form-eyebrow {
+      font-family: var(--font-mono); font-size: 0.75rem;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--ink-soft); margin-bottom: 2rem;
+    }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label {
+      font-family: var(--font-mono); font-size: 0.72rem;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--ink-soft); display: block; margin-bottom: 0.6rem;
+    }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%; padding: 0.85rem 0;
+      background: transparent; border: none;
+      border-bottom: 1px solid var(--line);
+      font-family: var(--font-body); font-size: 1rem; color: var(--ink);
+      transition: border-color 0.3s var(--ease); outline: none;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--accent); }
+    .form-group textarea { resize: vertical; min-height: 120px; font-family: var(--font-body); }
+    .form-group input:disabled, .form-group textarea:disabled, .form-group select:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .form-honeypot {
+      position: absolute !important;
+      left: -9999px !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      height: 0; width: 0;
+    }
+    .form-status {
+      margin-top: 1.5rem;
+      padding: 1.25rem;
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      display: none;
+    }
+    .form-status.show { display: block; animation: fadeUp 0.45s var(--ease); }
+    .form-status.success {
+      background: var(--accent-soft);
+      border-left: 3px solid var(--accent);
+      color: var(--ink);
+    }
+    .form-status.error {
+      background: #f5dfd7;
+      border-left: 3px solid #b8452c;
+      color: #3d1a10;
+    }
+    .form-status-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 0.3rem;
+      letter-spacing: -0.01em;
+    }
+    .btn[disabled] { opacity: 0.6; cursor: wait; }
+    .btn .btn-loading { display: none; }
+    .btn.is-loading .btn-label, .btn.is-loading .btn-arrow { display: none; }
+    .btn.is-loading .btn-loading { display: inline-flex; align-items: center; gap: 0.5rem; }
+    .btn.is-loading .btn-loading::before {
+      content: '';
+      width: 12px; height: 12px;
+      border: 2px solid currentColor;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* FAQ */
+    .faq-list { border-top: 1px solid var(--line); }
+    .faq-item { border-bottom: 1px solid var(--line); padding: 1.75rem 0; cursor: pointer; }
+    .faq-q { display: flex; justify-content: space-between; align-items: center; gap: 2rem; }
+    .faq-q h4 { font-size: 1.35rem; font-weight: 700; line-height: 1.2; }
+    .faq-toggle {
+      width: 32px; height: 32px; border: 1px solid var(--line);
+      border-radius: 50%; display: grid; place-items: center;
+      flex-shrink: 0; transition: all 0.3s var(--ease);
+      font-size: 1.2rem; color: var(--ink-soft);
+    }
+    .faq-item.open .faq-toggle {
+      background: var(--accent); color: var(--white);
+      border-color: var(--accent); transform: rotate(45deg);
+    }
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s var(--ease), margin-top 0.4s var(--ease);
+      color: var(--ink-soft); line-height: 1.6; max-width: 60ch;
+    }
+    .faq-item.open .faq-a { max-height: 300px; margin-top: 1rem; }
+
+    /* FOOTER */
+    .footer {
+      background: var(--ink); color: var(--bg);
+      padding: 5rem 2.5rem 2rem; position: relative; overflow: hidden;
+    }
+    .footer::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+    .footer-grid {
+      max-width: 1400px; margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr;
+      gap: 4rem; margin-bottom: 4rem;
+    }
+    .footer-brand h3 {
+      font-family: var(--font-display); font-size: 2.5rem;
+      font-weight: 900; font-style: italic;
+      letter-spacing: -0.03em; line-height: 1; margin-bottom: 1.25rem;
+    }
+    .footer-brand p { opacity: 0.55; max-width: 320px; font-size: 0.95rem; line-height: 1.6; }
+    .footer h5 {
+      font-family: var(--font-mono); font-size: 0.72rem;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: rgba(242, 238, 228, 0.5); margin-bottom: 1.5rem; font-weight: 500;
+    }
+    .footer ul { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+    .footer ul a { opacity: 0.85; transition: color 0.3s var(--ease); font-size: 0.95rem; cursor: pointer; }
+    .footer ul a:hover { color: var(--accent); opacity: 1; }
+    .footer-bottom {
+      max-width: 1400px; margin: 0 auto;
+      padding-top: 2rem; border-top: 1px solid rgba(242, 238, 228, 0.15);
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--font-mono); font-size: 0.75rem;
+      color: rgba(242, 238, 228, 0.5); letter-spacing: 0.05em;
+      gap: 2rem; flex-wrap: wrap;
+    }
+    .footer-bottom a { transition: color 0.3s var(--ease); }
+    .footer-bottom a:hover { color: var(--accent); opacity: 1 !important; }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { opacity: 0; animation: fadeUp 0.9s var(--ease) forwards; }
+    .fade-up.d1 { animation-delay: 0.1s; }
+    .fade-up.d2 { animation-delay: 0.25s; }
+    .fade-up.d3 { animation-delay: 0.4s; }
+    .fade-up.d4 { animation-delay: 0.55s; }
+    .fade-up.d5 { animation-delay: 0.7s; }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .process-steps { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .cap-item { grid-template-columns: 60px 1fr 2fr auto; gap: 1.5rem; }
+    }
+    @media (max-width: 768px) {
+      .nav { padding: 1rem 1.25rem; }
+      .container { padding: 0 1.25rem; }
+      .nav-links { gap: 1rem; }
+      .nav-links li:not(.lang-item):not(.cta-item) { display: none; }
+      .nav-toggle { display: block; }
+      .hero { padding: 4rem 0 3rem; }
+      .hero-meta { flex-wrap: wrap; gap: 1.5rem; }
+      .hero-sub { grid-template-columns: 1fr; gap: 2rem; }
+      .section-head { grid-template-columns: 1fr; gap: 1.5rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .portfolio-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .portfolio-item:nth-child(even) { margin-top: 0; }
+      .process-steps { grid-template-columns: 1fr; gap: 2rem; }
+      .cap-item { grid-template-columns: 40px 1fr; gap: 1rem; padding: 1.5rem 0; }
+      .cap-item-desc, .cap-item-arrow { grid-column: 2; }
+      .contact-layout { grid-template-columns: 1fr; gap: 3rem; padding: 3rem 0 5rem; }
+      .contact-form { padding: 2rem 1.5rem; }
+      .footer { padding: 4rem 1.25rem 2rem; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+      .marquee-track { font-size: 1.5rem; }
+    }
+
+    [data-lang-hide] { display: none !important; }
+
+    /* LEGAL PAGES */
+    .legal-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 5rem;
+      padding: 4rem 0 7rem;
+      align-items: start;
+    }
+    .legal-toc {
+      position: sticky;
+      top: 6rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .legal-toc-title {
+      color: var(--ink-soft);
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .legal-toc ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .legal-toc a {
+      color: var(--ink-soft);
+      padding: 0.3rem 0;
+      display: block;
+      transition: color 0.25s var(--ease);
+      cursor: pointer;
+    }
+    .legal-toc a:hover { color: var(--accent); }
+    .legal-content { max-width: 44rem; }
+    .legal-content h2 {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-top: 3.5rem;
+      margin-bottom: 1rem;
+      letter-spacing: -0.015em;
+      line-height: 1.15;
+      scroll-margin-top: 6rem;
+    }
+    .legal-content h2:first-child { margin-top: 0; }
+    .legal-content h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+    .legal-content p {
+      color: var(--ink-soft);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+      font-size: 0.98rem;
+    }
+    .legal-content ul, .legal-content ol {
+      margin: 0.5rem 0 1.25rem 1.5rem;
+      color: var(--ink-soft);
+      line-height: 1.7;
+      font-size: 0.98rem;
+    }
+    .legal-content li { margin-bottom: 0.35rem; }
+    .legal-content strong { color: var(--ink); font-weight: 600; }
+    .legal-content a {
+      color: var(--ink);
+      border-bottom: 1px solid var(--line);
+      transition: color 0.25s var(--ease), border-color 0.25s var(--ease);
+    }
+    .legal-content a:hover { color: var(--accent); border-color: var(--accent); }
+    .legal-content .legal-meta {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-soft);
+      padding: 1rem 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 2.5rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    @media (max-width: 900px) {
+      .legal-layout { grid-template-columns: 1fr; gap: 2rem; }
+      .legal-toc { position: static; margin-bottom: 1rem; }
+      .legal-toc ul { flex-direction: row; flex-wrap: wrap; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a class="nav-logo" data-page="home">Helvetic Works</a>
+    <ul class="nav-links">
+      <li><a data-page="home" class="active" data-lang="de">Start</a><a data-page="home" class="active" data-lang="en">Home</a></li>
+      <li><a data-page="services" data-lang="de">Leistungen</a><a data-page="services" data-lang="en">Services</a></li>
+      <li><a data-page="contact" data-lang="de">Kontakt</a><a data-page="contact" data-lang="en">Contact</a></li>
+      <li class="lang-item">
+        <div class="lang-toggle">
+          <button data-set-lang="de" class="active">DE</button>
+          <button data-set-lang="en">EN</button>
+        </div>
+      </li>
+      <li class="cta-item">
+        <a data-page="contact" class="nav-cta" data-lang="de">Angebot</a>
+        <a data-page="contact" class="nav-cta" data-lang="en">Quote</a>
+      </li>
+    </ul>
+    <button class="nav-toggle">Menu</button>
+  </nav>
+
+  <main>
+
+    <!-- =================== HOME =================== -->
+    <div class="page active" id="page-home">
+      <section class="hero">
+        <div class="container">
+          <div class="hero-meta fade-up">
+            <div class="hero-meta-item" data-lang="de">Studio<span>— Schweiz & weltweit</span></div>
+            <div class="hero-meta-item" data-lang="en">Studio<span>— Switzerland & worldwide</span></div>
+            <div class="hero-meta-item" data-lang="de">Verfügbar für<span>— Projekte 2026</span></div>
+            <div class="hero-meta-item" data-lang="en">Available for<span>— Projects 2026</span></div>
+            <div class="hero-meta-item" data-lang="de">Gegründet<span>— Zürichsee, CH</span></div>
+            <div class="hero-meta-item" data-lang="en">Based in<span>— Zürichsee, CH</span></div>
+          </div>
+
+          <h1 class="display hero-title">
+            <span data-lang="de">
+              <span class="line fade-up d1">Websites, die</span>
+              <span class="line fade-up d2"><em>funktionieren —</em></span>
+              <span class="line fade-up d3">nicht nur</span>
+              <span class="line fade-up d4">aussehen.</span>
+            </span>
+            <span data-lang="en">
+              <span class="line fade-up d1">Websites that</span>
+              <span class="line fade-up d2"><em>perform —</em></span>
+              <span class="line fade-up d3">not just</span>
+              <span class="line fade-up d4">look pretty.</span>
+            </span>
+          </h1>
+
+          <div class="hero-sub">
+            <div class="fade-up d4">
+              <p data-lang="de">Vom ersten Entwurf bis zum laufenden Server — wir bauen individuelle Websites, die zu Ihrer Marke passen, schnell laden und zuverlässig gehostet werden. Alles aus einer Hand.</p>
+              <p data-lang="en">From first sketch to live server — we build custom websites tailored to your brand, loading fast and hosted reliably. All from one source.</p>
+            </div>
+            <div class="hero-actions fade-up d5">
+              <a data-page="contact" class="btn">
+                <span data-lang="de">Projekt starten</span>
+                <span data-lang="en">Start a project</span>
+                <span class="btn-arrow">→</span>
+              </a>
+              <a data-page="services" class="btn btn-outline">
+                <span data-lang="de">Leistungen ansehen</span>
+                <span data-lang="en">See services</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="marquee">
+          <div class="marquee-track">
+            <span data-lang="de">Design · Entwicklung · Hosting · Webshops · SEO · Wartung · Animationen · Content · Strategie · Design · Entwicklung · Hosting · Webshops · SEO · Wartung · Animationen · Content · Strategie ·&nbsp;</span>
+            <span data-lang="de">Design · Entwicklung · Hosting · Webshops · SEO · Wartung · Animationen · Content · Strategie · Design · Entwicklung · Hosting · Webshops · SEO · Wartung · Animationen · Content · Strategie ·&nbsp;</span>
+            <span data-lang="en">Design · Development · Hosting · Shops · SEO · Maintenance · Animations · Content · Strategy · Design · Development · Hosting · Shops · SEO · Maintenance · Animations · Content · Strategy ·&nbsp;</span>
+            <span data-lang="en">Design · Development · Hosting · Shops · SEO · Maintenance · Animations · Content · Strategy · Design · Development · Hosting · Shops · SEO · Maintenance · Animations · Content · Strategy ·&nbsp;</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow" data-lang="de">Was bauen wir · 01</div>
+              <div class="eyebrow" data-lang="en">What we build · 01</div>
+              <h2 style="margin-top: 1.5rem;">
+                <span data-lang="de">Jede Art von <em>Website</em>.</span>
+                <span data-lang="en">Every kind of <em>website</em>.</span>
+              </h2>
+            </div>
+            <p data-lang="de">Ob einfache Visitenkarten-Site oder komplexer Online-Shop mit Zahlungsabwicklung — wir arbeiten mit dem Stack, der zum Projekt passt. Keine Baukasten-Vorlagen.</p>
+            <p data-lang="en">Whether a simple one-pager or a complex online shop with payments —  we pick the stack that fits the project. No templated builders.</p>
+          </div>
+
+          <div class="services-grid">
+            <article class="service-card">
+              <div class="service-number">01 / 06</div>
+              <div>
+                <h3>
+                  <span data-lang="de">Unternehmens-<br/>websites</span>
+                  <span data-lang="en">Business<br/>websites</span>
+                </h3>
+                <p data-lang="de">Professionelle Präsenz für KMU, Agenturen und Dienstleister. Mit CMS, damit Sie Inhalte selbst pflegen können.</p>
+                <p data-lang="en">Professional presence for SMEs, agencies and service providers. With a CMS so you can edit content yourself.</p>
+              </div>
+              <div class="service-tags">
+                <span class="service-tag">CMS</span>
+                <span class="service-tag">SEO</span>
+                <span class="service-tag" data-lang="de">Mehrsprachig</span>
+                <span class="service-tag" data-lang="en">Multilang</span>
+              </div>
+            </article>
+
+            <article class="service-card">
+              <div class="service-number">02 / 06</div>
+              <div>
+                <h3>
+                  <span data-lang="de">Online-Shops<br/>& E-Commerce</span>
+                  <span data-lang="en">Online shops<br/>& E-commerce</span>
+                </h3>
+                <p data-lang="de">Vollständige Webshops mit sicherer Zahlungsabwicklung via Stripe, TWINT, PayPal und Kreditkarte.</p>
+                <p data-lang="en">Full online shops with secure payments via Stripe, TWINT, PayPal and credit cards.</p>
+              </div>
+              <div class="service-tags">
+                <span class="service-tag">Stripe</span>
+                <span class="service-tag">TWINT</span>
+                <span class="service-tag">PayPal</span>
+              </div>
+            </article>
+
+            <article class="service-card">
+              <div class="service-number">03 / 06</div>
+              <div>
+                <h3>
+                  <span data-lang="de">Portfolio-<br/>Websites</span>
+                  <span data-lang="en">Portfolio<br/>websites</span>
+                </h3>
+                <p data-lang="de">Für Kreative, Fotografen, Architekten — Websites, die Ihre Arbeit in den Mittelpunkt stellen.</p>
+                <p data-lang="en">For creatives, photographers, architects — sites that put your work front and centre.</p>
+              </div>
+              <div class="service-tags">
+                <span class="service-tag" data-lang="de">Galerien</span>
+                <span class="service-tag" data-lang="en">Galleries</span>
+                <span class="service-tag" data-lang="de">Animationen</span>
+                <span class="service-tag" data-lang="en">Animations</span>
+              </div>
+            </article>
+
+            <article class="service-card">
+              <div class="service-number">04 / 06</div>
+              <div>
+                <h3>
+                  <span data-lang="de">Landing-<br/>pages</span>
+                  <span data-lang="en">Landing<br/>pages</span>
+                </h3>
+                <p data-lang="de">Fokussierte Seiten für Produkteinführungen, Kampagnen oder Events — optimiert auf Conversion.</p>
+                <p data-lang="en">Focused pages for product launches, campaigns or events — optimised for conversion.</p>
+              </div>
+              <div class="service-tags">
+                <span class="service-tag">Conversion</span>
+                <span class="service-tag">A/B</span>
+                <span class="service-tag">Analytics</span>
+              </div>
+            </article>
+
+            <article class="service-card">
+              <div class="service-number">05 / 06</div>
+              <div>
+                <h3>
+                  <span data-lang="de">Blogs &<br/>Magazine</span>
+                  <span data-lang="en">Blogs &<br/>magazines</span>
+                </h3>
+                <p data-lang="de">Redaktionelle Websites mit Kommentaren, Newsletter-Integration und Werbeflächen (Google Ads & Direct Deals).</p>
+                <p data-lang="en">Editorial sites with comments, newsletter integration and ad slots (Google Ads & direct deals).</p>
+              </div>
+              <div class="service-tags">
+                <span class="service-tag">Ads</span>
+                <span class="service-tag">Newsletter</span>
+                <span class="service-tag">RSS</span>
+              </div>
+            </article>
+
+            <article class="service-card">
+              <div class="service-number">06 / 06</div>
+              <div>
+                <h3>
+                  <span data-lang="de">Web-Apps &<br/>Buchungssysteme</span>
+                  <span data-lang="en">Web apps &<br/>booking systems</span>
+                </h3>
+                <p data-lang="de">Maßgeschneiderte Tools, Kundenportale und Online-Buchungen mit Kalenderintegration.</p>
+                <p data-lang="en">Custom tools, client portals and online bookings with calendar integration.</p>
+              </div>
+              <div class="service-tags">
+                <span class="service-tag">API</span>
+                <span class="service-tag">Login</span>
+                <span class="service-tag">Kalender</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="process">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow" data-lang="de">Vorgehen · 02</div>
+              <div class="eyebrow" data-lang="en">Process · 02</div>
+              <h2 style="margin-top: 1.5rem;">
+                <span data-lang="de">Vier Schritte,<br/><em>ein Ergebnis.</em></span>
+                <span data-lang="en">Four steps,<br/><em>one result.</em></span>
+              </h2>
+            </div>
+            <p style="color: rgba(242, 238, 228, 0.65);" data-lang="de">Klarer Ablauf, feste Meilensteine, keine Überraschungen bei der Rechnung. So arbeiten wir mit jedem Kunden.</p>
+            <p style="color: rgba(242, 238, 228, 0.65);" data-lang="en">Clear process, fixed milestones, no surprises on the invoice. This is how we work with every client.</p>
+          </div>
+
+          <div class="process-steps">
+            <div class="process-step">
+              <div class="process-step-num" data-lang="de">SCHRITT 01</div>
+              <div class="process-step-num" data-lang="en">STEP 01</div>
+              <h4>
+                <span data-lang="de">Gespräch & Konzept</span>
+                <span data-lang="en">Briefing & concept</span>
+              </h4>
+              <p data-lang="de">Kostenloses Erstgespräch. Wir klären Ziele, Zielgruppe, Umfang und Budget.</p>
+              <p data-lang="en">Free first call. We clarify goals, audience, scope and budget.</p>
+            </div>
+            <div class="process-step">
+              <div class="process-step-num" data-lang="de">SCHRITT 02</div>
+              <div class="process-step-num" data-lang="en">STEP 02</div>
+              <h4>
+                <span data-lang="de">Design & Entwurf</span>
+                <span data-lang="en">Design & draft</span>
+              </h4>
+              <p data-lang="de">Visuelle Entwürfe, Feedbackrunden, Abstimmung der Details — bis es sitzt.</p>
+              <p data-lang="en">Visual drafts, feedback rounds, tuning the details — until it lands.</p>
+            </div>
+            <div class="process-step">
+              <div class="process-step-num" data-lang="de">SCHRITT 03</div>
+              <div class="process-step-num" data-lang="en">STEP 03</div>
+              <h4>
+                <span data-lang="de">Entwicklung</span>
+                <span data-lang="en">Development</span>
+              </h4>
+              <p data-lang="de">Sauberer Code, responsives Verhalten, Testing auf allen Geräten und Browsern.</p>
+              <p data-lang="en">Clean code, responsive behaviour, testing on all devices and browsers.</p>
+            </div>
+            <div class="process-step">
+              <div class="process-step-num" data-lang="de">SCHRITT 04</div>
+              <div class="process-step-num" data-lang="en">STEP 04</div>
+              <h4>
+                <span data-lang="de">Launch & Hosting</span>
+                <span data-lang="en">Launch & hosting</span>
+              </h4>
+              <p data-lang="de">Go-live auf meinem Server, Einrichtung, Schulung — und optionale Wartung danach.</p>
+              <p data-lang="en">Go-live on our server, setup, training — and optional maintenance after.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-block">
+        <div class="container">
+          <div class="eyebrow" data-lang="de" style="margin-bottom: 2rem;">Nächster Schritt · 03</div>
+          <div class="eyebrow" data-lang="en" style="margin-bottom: 2rem;">Next step · 03</div>
+          <h2>
+            <span data-lang="de">Haben Sie ein <em>Projekt</em> im Kopf?</span>
+            <span data-lang="en">Got a <em>project</em> in mind?</span>
+          </h2>
+          <p data-lang="de">Erzählen Sie uns kurz davon und Sie erhalten innerhalb von 48 Stunden ein individuelles Angebot. Keine Pauschalpreise — jede Website ist anders.</p>
+          <p data-lang="en">Tell us briefly about it and you'll receive a custom quote within 48 hours. No flat rates — every website is different.</p>
+          <a data-page="contact" class="btn">
+            <span data-lang="de">Jetzt anfragen</span>
+            <span data-lang="en">Request a quote</span>
+            <span class="btn-arrow">→</span>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <!-- =================== SERVICES =================== -->
+    <div class="page" id="page-services">
+      <section class="page-header">
+        <div class="container">
+          <div class="eyebrow" data-lang="de">Leistungen · Was wir machen</div>
+          <div class="eyebrow" data-lang="en">Services · What we do</div>
+          <h1 style="margin-top: 2rem;">
+            <span data-lang="de">Alles rund um Ihre <em>Website</em> —<br/>aus einer Hand.</span>
+            <span data-lang="en">Everything for your <em>website</em> —<br/>all in one place.</span>
+          </h1>
+          <p class="page-header-intro" data-lang="de">Wir begleiten Ihr Projekt von der ersten Idee bis zum täglichen Betrieb. Design, Code, Hosting, Wartung — alles aus einer Hand, keine zersplitterte Dienstleisterkette.</p>
+          <p class="page-header-intro" data-lang="en">We handle your project from first idea to daily operation. Design, code, hosting, maintenance — all in one place, not a fractured chain of providers.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow" data-lang="de">Kernleistungen · 01</div>
+              <div class="eyebrow" data-lang="en">Core services · 01</div>
+              <h2 style="margin-top: 1.5rem;">
+                <span data-lang="de">Das <em>volle</em> Paket.</span>
+                <span data-lang="en">The <em>full</em> stack.</span>
+              </h2>
+            </div>
+            <p data-lang="de">Jede Leistung kann einzeln gebucht oder kombiniert werden. Die meisten Projekte umfassen Design, Entwicklung und Hosting.</p>
+            <p data-lang="en">Every service can be booked alone or combined. Most projects include design, development and hosting together.</p>
+          </div>
+
+          <div class="cap-list">
+            <div class="cap-item">
+              <div class="cap-item-num">01</div>
+              <div>
+                <div class="cap-item-title" data-lang="de">Webdesign</div>
+                <div class="cap-item-title" data-lang="en">Web design</div>
+              </div>
+              <div class="cap-item-desc" data-lang="de">Maßgeschneiderte Entwürfe — keine Vorlagen. Wir arbeiten gemeinsam an Look & Feel, bis es zu Ihrer Marke passt.</div>
+              <div class="cap-item-desc" data-lang="en">Custom drafts — no templates. We work together on look & feel until it fits your brand.</div>
+              <div class="cap-item-arrow">→</div>
+            </div>
+            <div class="cap-item">
+              <div class="cap-item-num">02</div>
+              <div>
+                <div class="cap-item-title" data-lang="de">Entwicklung</div>
+                <div class="cap-item-title" data-lang="en">Development</div>
+              </div>
+              <div class="cap-item-desc" data-lang="de">Sauberer Code, schnelle Ladezeiten, gute Lesbarkeit auf jedem Gerät. Auch komplexe Funktionen sind kein Problem.</div>
+              <div class="cap-item-desc" data-lang="en">Clean code, fast load times, legible on every device. Complex features welcome.</div>
+              <div class="cap-item-arrow">→</div>
+            </div>
+            <div class="cap-item">
+              <div class="cap-item-num">03</div>
+              <div>
+                <div class="cap-item-title" data-lang="de">Hosting</div>
+                <div class="cap-item-title" data-lang="en">Hosting</div>
+              </div>
+              <div class="cap-item-desc" data-lang="de">Zuverlässige Server in der Schweiz und Europa. SSL-Zertifikat, tägliche Backups, 99.9% Uptime — inklusive.</div>
+              <div class="cap-item-desc" data-lang="en">Reliable servers in Switzerland and Europe. SSL certificate, daily backups, 99.9% uptime — all included.</div>
+              <div class="cap-item-arrow">→</div>
+            </div>
+            <div class="cap-item">
+              <div class="cap-item-num">04</div>
+              <div>
+                <div class="cap-item-title" data-lang="de">Zahlungssysteme</div>
+                <div class="cap-item-title" data-lang="en">Payment systems</div>
+              </div>
+              <div class="cap-item-desc" data-lang="de">Stripe, TWINT, PayPal, Kreditkarte, Rechnung, Apple Pay — Wir integrieren das, was Ihre Kunden erwarten.</div>
+              <div class="cap-item-desc" data-lang="en">Stripe, TWINT, PayPal, credit card, invoice, Apple Pay — we integrate whatever your customers expect.</div>
+              <div class="cap-item-arrow">→</div>
+            </div>
+            <div class="cap-item">
+              <div class="cap-item-num">05</div>
+              <div>
+                <div class="cap-item-title" data-lang="de">Werbung & Ads</div>
+                <div class="cap-item-title" data-lang="en">Ads & monetisation</div>
+              </div>
+              <div class="cap-item-desc" data-lang="de">Google AdSense, Direct Deals, Native Ads und Affiliate-Integration — sauber eingebunden, ohne die Performance zu ruinieren.</div>
+              <div class="cap-item-desc" data-lang="en">Google AdSense, direct deals, native ads and affiliate integration — cleanly embedded without killing performance.</div>
+              <div class="cap-item-arrow">→</div>
+            </div>
+            <div class="cap-item">
+              <div class="cap-item-num">06</div>
+              <div>
+                <div class="cap-item-title" data-lang="de">SEO & Performance</div>
+                <div class="cap-item-title" data-lang="en">SEO & performance</div>
+              </div>
+              <div class="cap-item-desc" data-lang="de">Technische Grundoptimierung, strukturierte Daten, saubere Meta-Tags und Ladezeit-Tuning ab dem ersten Tag.</div>
+              <div class="cap-item-desc" data-lang="en">Technical baseline optimisation, structured data, clean meta tags and load-time tuning from day one.</div>
+              <div class="cap-item-arrow">→</div>
+            </div>
+            <div class="cap-item">
+              <div class="cap-item-num">07</div>
+              <div>
+                <div class="cap-item-title" data-lang="de">CMS & Content</div>
+                <div class="cap-item-title" data-lang="en">CMS & content</div>
+              </div>
+              <div class="cap-item-desc" data-lang="de">WordPress, Webflow, Sanity oder maßgeschneidert — damit Sie Inhalte ohne Programmierkenntnisse pflegen können.</div>
+              <div class="cap-item-desc" data-lang="en">WordPress, Webflow, Sanity or custom — so you can manage content without touching code.</div>
+              <div class="cap-item-arrow">→</div>
+            </div>
+            <div class="cap-item">
+              <div class="cap-item-num">08</div>
+              <div>
+                <div class="cap-item-title" data-lang="de">Wartung & Support</div>
+                <div class="cap-item-title" data-lang="en">Maintenance & support</div>
+              </div>
+              <div class="cap-item-desc" data-lang="de">Monatliche Updates, Sicherheit, kleinere Änderungen und schnelle Reaktion bei Problemen. Optionales Paket.</div>
+              <div class="cap-item-desc" data-lang="en">Monthly updates, security, minor changes and fast response when things break. Optional package.</div>
+              <div class="cap-item-arrow">→</div>
+            </div>
+            <div class="cap-item">
+              <div class="cap-item-num">09</div>
+              <div>
+                <div class="cap-item-title" data-lang="de">Mehrsprachigkeit</div>
+                <div class="cap-item-title" data-lang="en">Multi-language</div>
+              </div>
+              <div class="cap-item-desc" data-lang="de">Deutsch, Französisch, Italienisch, Englisch oder mehr — mit sauberer URL-Struktur und korrekter SEO-Auszeichnung.</div>
+              <div class="cap-item-desc" data-lang="en">German, French, Italian, English or more — with clean URL structure and correct SEO tagging.</div>
+              <div class="cap-item-arrow">→</div>
+            </div>
+            <div class="cap-item">
+              <div class="cap-item-num">10</div>
+              <div>
+                <div class="cap-item-title" data-lang="de">Integrationen</div>
+                <div class="cap-item-title" data-lang="en">Integrations</div>
+              </div>
+              <div class="cap-item-desc" data-lang="de">Newsletter, CRM, Buchhaltung, Kalender, Google Maps, Analytics — die Schnittstellen zu Ihren bestehenden Tools.</div>
+              <div class="cap-item-desc" data-lang="en">Newsletter, CRM, accounting, calendar, Google Maps, analytics — the interfaces to your existing tools.</div>
+              <div class="cap-item-arrow">→</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" style="padding-top: 0;">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow" data-lang="de">Preise · 02</div>
+              <div class="eyebrow" data-lang="en">Pricing · 02</div>
+              <h2 style="margin-top: 1.5rem;">
+                <span data-lang="de">Was kostet eine <em>Website?</em></span>
+                <span data-lang="en">What does a <em>website</em> cost?</span>
+              </h2>
+            </div>
+            <p data-lang="de">Jedes Projekt hat einen anderen Umfang, andere Anforderungen und andere Ziele. Statt Pauschalpreisen erhalten Sie ein individuelles Angebot, das zu Ihrem Vorhaben passt.</p>
+            <p data-lang="en">Every project has a different scope, different requirements, and different goals. Instead of flat rates, you receive a custom quote tailored to your project.</p>
+          </div>
+
+          <div style="background: var(--white); border: 1px solid var(--line); padding: 3.5rem; border-radius: var(--radius); position: relative; overflow: hidden;">
+            <div style="position: absolute; top: 0; left: 0; width: 80px; height: 3px; background: var(--accent);"></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+              <div>
+                <div class="eyebrow" style="margin-bottom: 1.5rem;" data-lang="de">Angebot anfordern</div>
+                <div class="eyebrow" style="margin-bottom: 1.5rem;" data-lang="en">Request a quote</div>
+                <h3 style="font-family: var(--font-display); font-size: 2.5rem; line-height: 1; margin-bottom: 1.5rem;">
+                  <span data-lang="de">Schreiben Sie uns eine <em style="color: var(--accent); font-style: italic;">E-Mail.</em></span>
+                  <span data-lang="en">Send us an <em style="color: var(--accent); font-style: italic;">email.</em></span>
+                </h3>
+                <p style="color: var(--ink-soft); line-height: 1.6; font-size: 1.05rem; margin-bottom: 2rem;" data-lang="de">Beschreiben Sie kurz Ihr Vorhaben — was Sie brauchen, bis wann und mit welchem ungefähren Budget. Sie bekommen innerhalb von 48 Stunden ein detailliertes Angebot zurück.</p>
+                <p style="color: var(--ink-soft); line-height: 1.6; font-size: 1.05rem; margin-bottom: 2rem;" data-lang="en">Briefly describe your project — what you need, by when and roughly what budget. You'll get a detailed quote back within 48 hours.</p>
+                <a href="mailto:kontakt@helveticworks.ch" class="btn">
+                  <span>kontakt@helveticworks.ch</span>
+                  <span class="btn-arrow">→</span>
+                </a>
+              </div>
+
+              <div style="border-left: 1px solid var(--line); padding-left: 4rem;">
+                <div class="eyebrow" style="margin-bottom: 1.5rem;" data-lang="de">Was wir wissen sollten</div>
+                <div class="eyebrow" style="margin-bottom: 1.5rem;" data-lang="en">What we need to know</div>
+                <ul style="list-style: none; display: flex; flex-direction: column; gap: 1.25rem;">
+                  <li style="display: flex; gap: 1rem; align-items: flex-start;">
+                    <span style="font-family: var(--font-mono); color: var(--accent); font-size: 0.9rem; margin-top: 0.15rem;">01</span>
+                    <span data-lang="de">Art der Website (Shop, Portfolio, Unternehmen, etc.)</span>
+                    <span data-lang="en">Type of website (shop, portfolio, business, etc.)</span>
+                  </li>
+                  <li style="display: flex; gap: 1rem; align-items: flex-start;">
+                    <span style="font-family: var(--font-mono); color: var(--accent); font-size: 0.9rem; margin-top: 0.15rem;">02</span>
+                    <span data-lang="de">Ungefährer Umfang (Anzahl Seiten, Sprachen)</span>
+                    <span data-lang="en">Rough scope (number of pages, languages)</span>
+                  </li>
+                  <li style="display: flex; gap: 1rem; align-items: flex-start;">
+                    <span style="font-family: var(--font-mono); color: var(--accent); font-size: 0.9rem; margin-top: 0.15rem;">03</span>
+                    <span data-lang="de">Gewünschte Funktionen (Shop, Buchung, Blog, ...)</span>
+                    <span data-lang="en">Desired features (shop, booking, blog, ...)</span>
+                  </li>
+                  <li style="display: flex; gap: 1rem; align-items: flex-start;">
+                    <span style="font-family: var(--font-mono); color: var(--accent); font-size: 0.9rem; margin-top: 0.15rem;">04</span>
+                    <span data-lang="de">Zeitrahmen und Budget-Vorstellung</span>
+                    <span data-lang="en">Timeframe and budget range</span>
+                  </li>
+                  <li style="display: flex; gap: 1rem; align-items: flex-start;">
+                    <span style="font-family: var(--font-mono); color: var(--accent); font-size: 0.9rem; margin-top: 0.15rem;">05</span>
+                    <span data-lang="de">Beispiele für Websites, die Ihnen gefallen</span>
+                    <span data-lang="en">Examples of websites you like</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" style="padding-top: 2rem;">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow" data-lang="de">Häufige Fragen · 03</div>
+              <div class="eyebrow" data-lang="en">FAQ · 03</div>
+              <h2 style="margin-top: 1.5rem;">
+                <span data-lang="de">Gute Frage.</span>
+                <span data-lang="en">Good question.</span>
+              </h2>
+            </div>
+            <p data-lang="de">Die Fragen, die wir am häufigsten bekommen. Fehlt etwas? Schreiben Sie uns einfach.</p>
+            <p data-lang="en">The questions we get most often. Something missing? Just get in touch.</p>
+          </div>
+
+          <div class="faq-list">
+            <div class="faq-item">
+              <div class="faq-q">
+                <h4>
+                  <span data-lang="de">Wie lange dauert ein Projekt?</span>
+                  <span data-lang="en">How long does a project take?</span>
+                </h4>
+                <div class="faq-toggle">+</div>
+              </div>
+              <div class="faq-a">
+                <span data-lang="de">Eine einfache Landingpage: etwa 1–2 Wochen. Eine mittlere Unternehmensseite: 3–5 Wochen. Ein Shop oder eine Web-App: ab 6 Wochen aufwärts, je nach Komplexität.</span>
+                <span data-lang="en">A simple landing page: about 1–2 weeks. A mid-sized business site: 3–5 weeks. A shop or web app: 6 weeks and up, depending on complexity.</span>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-q">
+                <h4>
+                  <span data-lang="de">Kann ich die Website später selbst bearbeiten?</span>
+                  <span data-lang="en">Can I edit the site myself later?</span>
+                </h4>
+                <div class="faq-toggle">+</div>
+              </div>
+              <div class="faq-a">
+                <span data-lang="de">Ja. Fast alle Projekte bekommen ein CMS (WordPress, Webflow, Sanity o. Ä.), mit dem Sie Texte, Bilder und Inhalte selbst anpassen können. Eine Einführung gehört zum Abschluss jedes Projekts dazu.</span>
+                <span data-lang="en">Yes. Almost all projects come with a CMS (WordPress, Webflow, Sanity or similar) so you can edit text, images and content yourself. A walk-through is included at the end of every project.</span>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-q">
+                <h4>
+                  <span data-lang="de">Was passiert mit meiner bestehenden Website?</span>
+                  <span data-lang="en">What happens to my existing website?</span>
+                </h4>
+                <div class="faq-toggle">+</div>
+              </div>
+              <div class="faq-a">
+                <span data-lang="de">Sie bleibt online, bis die neue fertig ist. Der Umzug (Domain, E-Mail, Inhalte) läuft in der Regel an einem Abend, ohne Ausfallzeit für Ihre Kunden.</span>
+                <span data-lang="en">It stays live until the new one is ready. The switch (domain, email, content) usually happens in one evening, with no downtime for your customers.</span>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-q">
+                <h4>
+                  <span data-lang="de">Gehört die Website mir, oder bin ich gebunden?</span>
+                  <span data-lang="en">Do I own the site, or am I locked in?</span>
+                </h4>
+                <div class="faq-toggle">+</div>
+              </div>
+              <div class="faq-a">
+                <span data-lang="de">Sie gehört komplett Ihnen. Kein Lock-in. Wenn Sie später woanders hosten möchten, übergeben wir Code, Datenbank und alle Zugänge. Selbstverständlich.</span>
+                <span data-lang="en">It's entirely yours. No lock-in. If you want to host elsewhere later, we hand over code, database and all credentials. Obviously.</span>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-q">
+                <h4>
+                  <span data-lang="de">Was kostet das Hosting im Monat?</span>
+                  <span data-lang="en">How much is hosting per month?</span>
+                </h4>
+                <div class="faq-toggle">+</div>
+              </div>
+              <div class="faq-a">
+                <span data-lang="de">Abhängig von Typ und Traffic. Für eine normale Unternehmensseite liegen die monatlichen Kosten meist im unteren zweistelligen Bereich, inklusive SSL, Backups und Support. Genaue Zahlen im Angebot.</span>
+                <span data-lang="en">Depends on type and traffic. For a normal business site, monthly costs are usually in the lower two-digit range, including SSL, backups and support. Exact figures in the quote.</span>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-q">
+                <h4>
+                  <span data-lang="de">Arbeiten Sie auch mit Kunden außerhalb der Schweiz?</span>
+                  <span data-lang="en">Do you work with clients outside Switzerland?</span>
+                </h4>
+                <div class="faq-toggle">+</div>
+              </div>
+              <div class="faq-a">
+                <span data-lang="de">Ja. Remote-Arbeit funktioniert problemlos — wir haben Kunden in Deutschland, Österreich, Liechtenstein und anderen Ländern. Das Abrechnungsland spielt keine Rolle.</span>
+                <span data-lang="en">Yes. Remote work is no problem — we have clients in Germany, Austria, Liechtenstein and other countries. The billing country doesn't matter.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-block">
+        <div class="container">
+          <div class="eyebrow" style="margin-bottom: 2rem;" data-lang="de">Bereit? · 04</div>
+          <div class="eyebrow" style="margin-bottom: 2rem;" data-lang="en">Ready? · 04</div>
+          <h2>
+            <span data-lang="de">Lass uns <em>loslegen.</em></span>
+            <span data-lang="en">Let's <em>get started.</em></span>
+          </h2>
+          <p data-lang="de">Kostenloses Erstgespräch. Unverbindliches Angebot. Keine Überraschungen.</p>
+          <p data-lang="en">Free first call. No-obligation quote. No surprises.</p>
+          <a data-page="contact" class="btn">
+            <span data-lang="de">Kontakt aufnehmen</span>
+            <span data-lang="en">Get in touch</span>
+            <span class="btn-arrow">→</span>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <!-- =================== PORTFOLIO =================== -->
+
+    <!-- =================== CONTACT =================== -->
+    <div class="page" id="page-contact">
+      <section class="page-header">
+        <div class="container">
+          <div class="eyebrow" data-lang="de">Kontakt · Lass uns reden</div>
+          <div class="eyebrow" data-lang="en">Contact · Let's talk</div>
+          <h1 style="margin-top: 2rem;">
+            <span data-lang="de">Erzählen Sie uns<br/>von Ihrem <em>Projekt.</em></span>
+            <span data-lang="en">Tell us about<br/>your <em>project.</em></span>
+          </h1>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <div class="contact-layout">
+
+            <div class="contact-info">
+              <h2>
+                <span data-lang="de">Für ein <em>Angebot</em><br/>genügt eine E-Mail.</span>
+                <span data-lang="en">One email is <br/>enough for a <em>quote</em>.</span>
+              </h2>
+              <p data-lang="de">Jedes Projekt ist anders, deshalb gibt es keine Pauschalpreise. Schreiben Sie uns kurz, was Sie vorhaben — innerhalb von 48 Stunden erhalten Sie ein transparentes, individuelles Angebot zurück. Kostenlos und unverbindlich.</p>
+              <p data-lang="en">Every project is different, which is why there are no flat rates. Just send us a quick note about what you have in mind — within 48 hours you'll get a transparent, tailored quote back. Free and no obligation.</p>
+
+              <div class="contact-details">
+                <div class="contact-detail">
+                  <span class="label" data-lang="de">E-Mail direkt</span>
+                  <span class="label" data-lang="en">Email directly</span>
+                  <div class="value"><a href="mailto:kontakt@helveticworks.ch">kontakt@helveticworks.ch</a></div>
+                </div>
+                <div class="contact-detail">
+                  <span class="label" data-lang="de">Standort</span>
+                  <span class="label" data-lang="en">Location</span>
+                  <div class="value">
+                    <span data-lang="de">Zürich, Schweiz</span>
+                    <span data-lang="en">Zürich, Switzerland</span>
+                  </div>
+                </div>
+                <div class="contact-detail">
+                  <span class="label" data-lang="de">Reaktionszeit</span>
+                  <span class="label" data-lang="en">Response time</span>
+                  <div class="value">
+                    <span data-lang="de">Innerhalb von 48 Stunden</span>
+                    <span data-lang="en">Within 48 hours</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-form">
+              <div class="form-eyebrow" data-lang="de">Anfrageformular · 01</div>
+              <div class="form-eyebrow" data-lang="en">Inquiry form · 01</div>
+              <h3 style="font-family: var(--font-display); font-size: 2rem; line-height: 1; margin-bottom: 2.5rem; letter-spacing: -0.02em;">
+                <span data-lang="de">Lieber hier schreiben?<br/><em style="color: var(--accent); font-style: italic;">Bitte sehr.</em></span>
+                <span data-lang="en">Rather write here?<br/><em style="color: var(--accent); font-style: italic;">Go ahead.</em></span>
+              </h3>
+
+              <form id="inquiry-form" action="https://formspree.io/f/mykllwjk" method="POST">
+
+                <div class="form-group">
+                  <label data-lang="de" for="f-name">Name *</label>
+                  <label data-lang="en" for="f-name">Name *</label>
+                  <input id="f-name" type="text" name="name" required data-ph-de="Ihr Name" data-ph-en="Your name" />
+                </div>
+                <div class="form-group">
+                  <label data-lang="de" for="f-email">E-Mail *</label>
+                  <label data-lang="en" for="f-email">Email *</label>
+                  <input id="f-email" type="email" name="email" required data-ph-de="name@firma.ch" data-ph-en="name@company.com" />
+                </div>
+                <div class="form-group">
+                  <label data-lang="de" for="f-company">Unternehmen (optional)</label>
+                  <label data-lang="en" for="f-company">Company (optional)</label>
+                  <input id="f-company" type="text" name="company" data-ph-de="Firmenname" data-ph-en="Company name" />
+                </div>
+                <div class="form-group">
+                  <label data-lang="de" for="f-project">Art des Projekts</label>
+                  <label data-lang="en" for="f-project">Project type</label>
+                  <select id="f-project" name="project_type">
+                    <option data-lang="de">Unternehmenswebsite</option>
+                    <option data-lang="en">Business website</option>
+                    <option data-lang="de">Online-Shop / E-Commerce</option>
+                    <option data-lang="en">Online shop / E-commerce</option>
+                    <option data-lang="de">Portfolio</option>
+                    <option data-lang="en">Portfolio</option>
+                    <option data-lang="de">Landingpage</option>
+                    <option data-lang="en">Landing page</option>
+                    <option data-lang="de">Blog / Magazin</option>
+                    <option data-lang="en">Blog / Magazine</option>
+                    <option data-lang="de">Web-App / Buchungssystem</option>
+                    <option data-lang="en">Web app / Booking system</option>
+                    <option data-lang="de">Nur Hosting / Wartung</option>
+                    <option data-lang="en">Hosting / Maintenance only</option>
+                    <option data-lang="de">Etwas anderes</option>
+                    <option data-lang="en">Something else</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label data-lang="de" for="f-budget">Budget-Vorstellung (optional)</label>
+                  <label data-lang="en" for="f-budget">Budget range (optional)</label>
+                  <select id="f-budget" name="budget">
+                    <option data-lang="de">Noch unsicher</option>
+                    <option data-lang="en">Not sure yet</option>
+                    <option>Unter CHF 1'000</option>
+                    <option>CHF 1'000 – 3'000</option>
+                    <option>CHF 3'000 – 5'000</option>
+                    <option>CHF 5'000+</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label data-lang="de" for="f-message">Ihre Nachricht *</label>
+                  <label data-lang="en" for="f-message">Your message *</label>
+                  <textarea id="f-message" name="message" required data-ph-de="Was haben Sie vor? Gerne mit Link zu bestehender Site, gewünschten Funktionen, Zeitplan..." data-ph-en="What are you planning? Feel free to include a link to your existing site, desired features, timeline..."></textarea>
+                </div>
+
+                <button class="btn" type="submit" style="width: 100%; justify-content: center; margin-top: 1rem;">
+                  <span class="btn-label" data-lang="de">Anfrage senden</span>
+                  <span class="btn-label" data-lang="en">Send inquiry</span>
+                  <span class="btn-arrow">→</span>
+                  <span class="btn-loading" data-lang="de">Wird gesendet…</span>
+                  <span class="btn-loading" data-lang="en">Sending…</span>
+                </button>
+
+                <div class="form-status success" id="form-success">
+                  <div class="form-status-title" data-lang="de">Danke — Ihre Nachricht ist angekommen.</div>
+                  <div class="form-status-title" data-lang="en">Thanks — your message is in.</div>
+                  <div data-lang="de">Wir melden uns innerhalb von 48 Stunden mit einem individuellen Angebot zurück.</div>
+                  <div data-lang="en">We'll get back to you within 48 hours with a custom quote.</div>
+                </div>
+
+                <div class="form-status error" id="form-error">
+                  <div class="form-status-title" data-lang="de">Etwas hat nicht geklappt.</div>
+                  <div class="form-status-title" data-lang="en">Something went wrong.</div>
+                  <div data-lang="de">Bitte versuchen Sie es erneut oder schreiben Sie direkt an <a href="mailto:kontakt@helveticworks.ch" style="color: inherit; text-decoration: underline;">kontakt@helveticworks.ch</a>.</div>
+                  <div data-lang="en">Please try again or email us directly at <a href="mailto:kontakt@helveticworks.ch" style="color: inherit; text-decoration: underline;">kontakt@helveticworks.ch</a>.</div>
+                </div>
+
+                <p style="margin-top: 1.25rem; font-size: 0.8rem; color: var(--ink-soft); font-family: var(--font-mono); letter-spacing: 0.02em;" data-lang="de">Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Daten gemäss Datenschutzerklärung zu.</p>
+                <p style="margin-top: 1.25rem; font-size: 0.8rem; color: var(--ink-soft); font-family: var(--font-mono); letter-spacing: 0.02em;" data-lang="en">By submitting, you agree to your data being processed according to the privacy policy.</p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section style="padding: 4rem 0; background: var(--ink); color: var(--bg); position: relative; overflow: hidden;">
+        <div style="position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent);"></div>
+        <div class="container">
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; align-items: start;">
+            <div>
+              <div style="font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 1rem;">01 — <span data-lang="de">Schnell</span><span data-lang="en">Fast</span></div>
+              <h4 style="font-family: var(--font-display); font-size: 1.5rem; line-height: 1.1; margin-bottom: 0.8rem;">
+                <span data-lang="de">48 Stunden Antwort</span>
+                <span data-lang="en">48-hour response</span>
+              </h4>
+              <p style="color: rgba(242, 238, 228, 0.6); font-size: 0.95rem; line-height: 1.55;" data-lang="de">Wir antworten auf jede Anfrage innerhalb von zwei Werktagen. Meistens schon am selben Tag.</p>
+              <p style="color: rgba(242, 238, 228, 0.6); font-size: 0.95rem; line-height: 1.55;" data-lang="en">We answer every inquiry within two business days. Usually the same day.</p>
+            </div>
+            <div>
+              <div style="font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 1rem;">02 — <span data-lang="de">Transparent</span><span data-lang="en">Transparent</span></div>
+              <h4 style="font-family: var(--font-display); font-size: 1.5rem; line-height: 1.1; margin-bottom: 0.8rem;">
+                <span data-lang="de">Keine versteckten Kosten</span>
+                <span data-lang="en">No hidden costs</span>
+              </h4>
+              <p style="color: rgba(242, 238, 228, 0.6); font-size: 0.95rem; line-height: 1.55;" data-lang="de">Festpreis nach Angebot. Was im Angebot steht, wird in Rechnung gestellt — nichts anderes.</p>
+              <p style="color: rgba(242, 238, 228, 0.6); font-size: 0.95rem; line-height: 1.55;" data-lang="en">Fixed price from the quote. What's in the quote is what gets invoiced — nothing else.</p>
+            </div>
+            <div>
+              <div style="font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 1rem;">03 — <span data-lang="de">Persönlich</span><span data-lang="en">Personal</span></div>
+              <h4 style="font-family: var(--font-display); font-size: 1.5rem; line-height: 1.1; margin-bottom: 0.8rem;">
+                <span data-lang="de">Direkter Draht zum Team</span>
+                <span data-lang="en">Direct line to the team</span>
+              </h4>
+              <p style="color: rgba(242, 238, 228, 0.6); font-size: 0.95rem; line-height: 1.55;" data-lang="de">Sie sprechen direkt mit dem Team, das Ihre Website baut — keine Agenturkette, keine Weiterleitungen.</p>
+              <p style="color: rgba(242, 238, 228, 0.6); font-size: 0.95rem; line-height: 1.55;" data-lang="en">You speak directly with the team building your site — no agency chain, no handoffs.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- =================== IMPRESSUM =================== -->
+    <div class="page" id="page-impressum">
+      <section class="page-header">
+        <div class="container">
+          <div class="eyebrow" data-lang="de">Rechtliches · 01</div>
+          <div class="eyebrow" data-lang="en">Legal · 01</div>
+          <h1 style="margin-top: 2rem;">
+            <span data-lang="de"><em>Impressum</em></span>
+            <span data-lang="en"><em>Imprint</em></span>
+          </h1>
+        </div>
+      </section>
+
+      <div class="container">
+        <div class="legal-layout">
+          <aside class="legal-toc">
+            <div class="legal-toc-title" data-lang="de">Auf dieser Seite</div>
+            <div class="legal-toc-title" data-lang="en">On this page</div>
+            <ul>
+              <li><a href="#imp-anbieter" data-lang="de">Anbieter</a><a href="#imp-anbieter" data-lang="en">Provider</a></li>
+              <li><a href="#imp-kontakt" data-lang="de">Kontakt</a><a href="#imp-kontakt" data-lang="en">Contact</a></li>
+              <li><a href="#imp-verantwortlich" data-lang="de">Verantwortlich</a><a href="#imp-verantwortlich" data-lang="en">Responsible</a></li>
+              <li><a href="#imp-haftung" data-lang="de">Haftung</a><a href="#imp-haftung" data-lang="en">Liability</a></li>
+              <li><a href="#imp-urheberrecht" data-lang="de">Urheberrecht</a><a href="#imp-urheberrecht" data-lang="en">Copyright</a></li>
+            </ul>
+          </aside>
+
+          <div class="legal-content">
+
+            <div class="legal-meta">
+              <span data-lang="de">Stand · April 2026</span>
+              <span data-lang="en">Last updated · April 2026</span>
+              <span data-lang="de">Gemäss Art. 3 Abs. 1 lit. s UWG</span>
+              <span data-lang="en">Per Art. 3 para. 1 lit. s UCA</span>
+            </div>
+
+            <h2 id="imp-anbieter" data-lang="de">Anbieter</h2>
+            <h2 id="imp-anbieter" data-lang="en">Provider</h2>
+            <p data-lang="de">
+              <strong>Helvetic Works</strong><br/>
+              Tristan Epaillard<br/>
+              Heligeichstrasse 22<br/>
+              8632 Tann, Zürich<br/>
+              Schweiz
+            </p>
+            <p data-lang="en">
+              <strong>Helvetic Works</strong><br/>
+              Tristan Epaillard<br/>
+              Heligeichstrasse 22<br/>
+              8632 Tann, Zürich<br/>
+              Switzerland
+            </p>
+
+            <h2 id="imp-kontakt" data-lang="de">Kontakt</h2>
+            <h2 id="imp-kontakt" data-lang="en">Contact</h2>
+            <p data-lang="de">
+              E-Mail: <a href="mailto:kontakt@helveticworks.ch">kontakt@helveticworks.ch</a><br/>
+              Website: <a href="https://helveticworks.ch">helveticworks.ch</a>
+            </p>
+            <p data-lang="en">
+              Email: <a href="mailto:kontakt@helveticworks.ch">kontakt@helveticworks.ch</a><br/>
+              Website: <a href="https://helveticworks.ch">helveticworks.ch</a>
+            </p>
+
+            <h2 id="imp-verantwortlich" data-lang="de">Verantwortlich für den Inhalt</h2>
+            <h2 id="imp-verantwortlich" data-lang="en">Responsible for content</h2>
+            <p data-lang="de">
+              Tristan Epaillard, Inhaber<br/>
+              Erreichbar unter den oben angegebenen Kontaktdaten.
+            </p>
+            <p data-lang="en">
+              Tristan Epaillard, owner<br/>
+              Reachable via the contact details above.
+            </p>
+
+            <h2 id="imp-haftung" data-lang="de">Haftungsausschluss</h2>
+            <h2 id="imp-haftung" data-lang="en">Disclaimer</h2>
+            <p data-lang="de">
+              Die Inhalte dieser Website werden mit grösstmöglicher Sorgfalt erstellt. Der Anbieter übernimmt jedoch keine Gewähr für die Richtigkeit, Vollständigkeit und Aktualität der bereitgestellten Inhalte. Die Nutzung der abrufbaren Inhalte erfolgt auf eigene Gefahr.
+            </p>
+            <p data-lang="de">
+              Haftungsansprüche gegen den Anbieter wegen Schäden materieller oder ideeller Art, die durch die Nutzung oder Nichtnutzung der dargebotenen Informationen bzw. durch die Nutzung fehlerhafter und unvollständiger Informationen verursacht wurden, sind grundsätzlich ausgeschlossen, sofern seitens des Anbieters kein nachweislich vorsätzliches oder grob fahrlässiges Verschulden vorliegt.
+            </p>
+            <p data-lang="en">
+              The content of this website is compiled with the greatest possible care. However, the provider does not guarantee the accuracy, completeness, or timeliness of the content provided. Use of the content is at the user's own risk.
+            </p>
+            <p data-lang="en">
+              Liability claims against the provider for material or immaterial damages caused by the use or non-use of the information provided, or by the use of incorrect or incomplete information, are excluded unless there is demonstrable intent or gross negligence on the part of the provider.
+            </p>
+
+            <h3 data-lang="de">Haftung für Links</h3>
+            <h3 data-lang="en">Liability for links</h3>
+            <p data-lang="de">
+              Diese Website kann Verweise und Links auf Websites Dritter enthalten. Diese liegen ausserhalb des Verantwortungsbereiches des Anbieters. Für den Inhalt der verlinkten Seiten sind ausschliesslich deren Betreiber verantwortlich.
+            </p>
+            <p data-lang="en">
+              This website may contain references and links to third-party websites. These lie outside the provider's area of responsibility. Responsibility for the content of linked pages lies solely with their operators.
+            </p>
+
+            <h2 id="imp-urheberrecht" data-lang="de">Urheberrecht</h2>
+            <h2 id="imp-urheberrecht" data-lang="en">Copyright</h2>
+            <p data-lang="de">
+              Die Urheber- und sämtliche weiteren Rechte an Inhalten, Bildern, Fotos oder anderen Dateien auf dieser Website gehören ausschliesslich Helvetic Works oder den speziell genannten Rechteinhabern. Für die Reproduktion jeglicher Elemente ist die schriftliche Zustimmung des Urheberrechtsträgers im Voraus einzuholen.
+            </p>
+            <p data-lang="en">
+              Copyright and all other rights to content, images, photos, or other files on this website belong exclusively to Helvetic Works or the specifically named rights holders. Written consent from the copyright holder must be obtained in advance for the reproduction of any elements.
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== DATENSCHUTZ =================== -->
+    <div class="page" id="page-datenschutz">
+      <section class="page-header">
+        <div class="container">
+          <div class="eyebrow" data-lang="de">Rechtliches · 02</div>
+          <div class="eyebrow" data-lang="en">Legal · 02</div>
+          <h1 style="margin-top: 2rem;">
+            <span data-lang="de"><em>Datenschutz</em></span>
+            <span data-lang="en"><em>Privacy</em></span>
+          </h1>
+        </div>
+      </section>
+
+      <div class="container">
+        <div class="legal-layout">
+          <aside class="legal-toc">
+            <div class="legal-toc-title" data-lang="de">Auf dieser Seite</div>
+            <div class="legal-toc-title" data-lang="en">On this page</div>
+            <ul>
+              <li><a href="#ds-verantwortlich" data-lang="de">Verantwortliche Stelle</a><a href="#ds-verantwortlich" data-lang="en">Controller</a></li>
+              <li><a href="#ds-grundsatz" data-lang="de">Grundsatz</a><a href="#ds-grundsatz" data-lang="en">Principle</a></li>
+              <li><a href="#ds-daten" data-lang="de">Erhobene Daten</a><a href="#ds-daten" data-lang="en">Collected data</a></li>
+              <li><a href="#ds-cookies" data-lang="de">Cookies</a><a href="#ds-cookies" data-lang="en">Cookies</a></li>
+              <li><a href="#ds-dritte" data-lang="de">Drittdienste</a><a href="#ds-dritte" data-lang="en">Third parties</a></li>
+              <li><a href="#ds-rechte" data-lang="de">Ihre Rechte</a><a href="#ds-rechte" data-lang="en">Your rights</a></li>
+            </ul>
+          </aside>
+
+          <div class="legal-content">
+
+            <div class="legal-meta">
+              <span data-lang="de">Stand · April 2026</span>
+              <span data-lang="en">Last updated · April 2026</span>
+              <span data-lang="de">Gemäss revDSG (Schweiz)</span>
+              <span data-lang="en">Per revised FADP (Switzerland)</span>
+            </div>
+
+            <h2 id="ds-verantwortlich" data-lang="de">Verantwortliche Stelle</h2>
+            <h2 id="ds-verantwortlich" data-lang="en">Controller</h2>
+            <p data-lang="de">
+              Verantwortlich für die Bearbeitung von Personendaten im Sinne des revidierten Schweizer Datenschutzgesetzes (revDSG) ist:
+            </p>
+            <p data-lang="en">
+              Responsible for the processing of personal data within the meaning of the revised Swiss Federal Act on Data Protection (revFADP):
+            </p>
+            <p data-lang="de">
+              <strong>Helvetic Works</strong><br/>
+              Tristan Epaillard<br/>
+              Heligeichstrasse 22<br/>
+              8632 Tann, Zürich<br/>
+              Schweiz<br/>
+              <a href="mailto:kontakt@helveticworks.ch">kontakt@helveticworks.ch</a>
+            </p>
+            <p data-lang="en">
+              <strong>Helvetic Works</strong><br/>
+              Tristan Epaillard<br/>
+              Heligeichstrasse 22<br/>
+              8632 Tann, Zürich<br/>
+              Switzerland<br/>
+              <a href="mailto:kontakt@helveticworks.ch">kontakt@helveticworks.ch</a>
+            </p>
+
+            <h2 id="ds-grundsatz" data-lang="de">Grundsatz</h2>
+            <h2 id="ds-grundsatz" data-lang="en">Principle</h2>
+            <p data-lang="de">
+              Der Schutz Ihrer Personendaten ist uns ein wichtiges Anliegen. Wir bearbeiten Ihre Daten nach den Grundsätzen von Treu und Glauben, Rechtmässigkeit, Verhältnismässigkeit, Zweckbindung und Transparenz. Soweit möglich, bearbeiten wir Daten anonym oder pseudonymisiert.
+            </p>
+            <p data-lang="en">
+              The protection of your personal data is important to us. We process your data according to the principles of good faith, lawfulness, proportionality, purpose limitation, and transparency. Where possible, we process data anonymously or pseudonymously.
+            </p>
+            <p data-lang="de">
+              Für Nutzer aus der EU gilt zusätzlich die Datenschutz-Grundverordnung (DSGVO), soweit anwendbar.
+            </p>
+            <p data-lang="en">
+              For users from the EU, the General Data Protection Regulation (GDPR) additionally applies where relevant.
+            </p>
+
+            <h2 id="ds-daten" data-lang="de">Welche Daten wir erheben</h2>
+            <h2 id="ds-daten" data-lang="en">What data we collect</h2>
+
+            <h3 data-lang="de">Server-Logfiles</h3>
+            <h3 data-lang="en">Server log files</h3>
+            <p data-lang="de">
+              Beim Aufruf dieser Website werden durch den Hosting-Anbieter technische Daten in Logfiles gespeichert. Dies umfasst:
+            </p>
+            <p data-lang="en">
+              When you visit this website, the hosting provider stores technical data in log files. This includes:
+            </p>
+            <ul data-lang="de">
+              <li>IP-Adresse (anonymisiert)</li>
+              <li>Datum und Uhrzeit des Zugriffs</li>
+              <li>Aufgerufene Seite und Referrer</li>
+              <li>Browsertyp und Betriebssystem</li>
+            </ul>
+            <ul data-lang="en">
+              <li>IP address (anonymised)</li>
+              <li>Date and time of access</li>
+              <li>Requested page and referrer</li>
+              <li>Browser type and operating system</li>
+            </ul>
+            <p data-lang="de">
+              Diese Daten werden ausschliesslich zur Gewährleistung eines sicheren und stabilen Betriebs verarbeitet. Eine Auswertung zu personenbezogenen Zwecken findet nicht statt. Die Daten werden nach maximal 90 Tagen gelöscht.
+            </p>
+            <p data-lang="en">
+              This data is processed solely to ensure safe and stable operation. It is not evaluated for personal purposes. Data is deleted after 90 days at most.
+            </p>
+
+            <h3 data-lang="de">Kontaktformular und E-Mail</h3>
+            <h3 data-lang="en">Contact form and email</h3>
+            <p data-lang="de">
+              Wenn Sie uns über das Anfrageformular oder per E-Mail kontaktieren, werden die von Ihnen angegebenen Daten (Name, E-Mail-Adresse, Firma, Nachricht etc.) zum Zweck der Bearbeitung Ihrer Anfrage verarbeitet. Diese Daten werden nicht an Dritte weitergegeben und nach Abschluss der Kommunikation gelöscht, sofern keine gesetzlichen Aufbewahrungspflichten entgegenstehen.
+            </p>
+            <p data-lang="en">
+              If you contact us via the inquiry form or by email, the data you provide (name, email address, company, message, etc.) is processed for the purpose of handling your request. This data is not shared with third parties and is deleted once communication is complete, unless statutory retention obligations apply.
+            </p>
+
+            <h2 id="ds-cookies" data-lang="de">Cookies und lokale Speicherung</h2>
+            <h2 id="ds-cookies" data-lang="en">Cookies and local storage</h2>
+            <p data-lang="de">
+              Diese Website verwendet keine Tracking-Cookies. Im lokalen Speicher Ihres Browsers (localStorage) wird lediglich Ihre Sprachauswahl (Deutsch oder Englisch) gespeichert, damit diese bei einem erneuten Besuch erhalten bleibt. Diese Information verlässt Ihr Gerät nicht und wird zu keinem Zeitpunkt an uns oder Dritte übermittelt.
+            </p>
+            <p data-lang="en">
+              This website uses no tracking cookies. Your language preference (German or English) is stored in your browser's local storage so that it persists between visits. This information never leaves your device and is not transmitted to us or any third party.
+            </p>
+
+            <h2 id="ds-dritte" data-lang="de">Drittdienste</h2>
+            <h2 id="ds-dritte" data-lang="en">Third-party services</h2>
+
+            <h3 data-lang="de">Schriftarten (Google Fonts)</h3>
+            <h3 data-lang="en">Fonts (Google Fonts)</h3>
+            <p data-lang="de">
+              Diese Website bindet Schriftarten von Google Fonts (Google Ireland Limited) ein. Beim Aufruf der Seite wird Ihre IP-Adresse an Server von Google übertragen. Weitere Informationen finden Sie in der <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Datenschutzerklärung von Google</a>.
+            </p>
+            <p data-lang="en">
+              This website uses fonts from Google Fonts (Google Ireland Limited). When you load the page, your IP address is transmitted to Google's servers. For more information, see <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>.
+            </p>
+
+            <h3 data-lang="de">Hosting</h3>
+            <h3 data-lang="en">Hosting</h3>
+            <p data-lang="de">
+              Diese Website wird auf GitHub Pages (GitHub, Inc., USA) gehostet. GitHub verarbeitet die oben erwähnten Logdaten in unserem Auftrag. Weitere Informationen finden Sie in der <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">Datenschutzerklärung von GitHub</a>.
+            </p>
+            <p data-lang="en">
+              This website is hosted on GitHub Pages (GitHub, Inc., USA). GitHub processes the log data mentioned above on our behalf. For more information, see <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub's Privacy Statement</a>.
+            </p>
+
+            <h3 data-lang="de">Formular-Dienstleister</h3>
+            <h3 data-lang="en">Form service provider</h3>
+            <p data-lang="de">
+              Anfragen über das Kontaktformular werden über Formspree (Formspree Inc., USA) verarbeitet und per E-Mail an uns weitergeleitet. Die Angaben werden ausschliesslich für die Anfragebearbeitung verwendet. Nähere Informationen finden Sie in der Datenschutzerklärung des jeweiligen Anbieters.
+            </p>
+            <p data-lang="en">
+              Inquiries via the contact form are processed through Formspree (Formspree Inc., USA) and forwarded to us by email. The information is used exclusively for handling the inquiry. For more details, see the respective provider's privacy policy.
+            </p>
+
+            <h2 id="ds-rechte" data-lang="de">Ihre Rechte</h2>
+            <h2 id="ds-rechte" data-lang="en">Your rights</h2>
+            <p data-lang="de">
+              Sie haben nach revDSG jederzeit das Recht auf:
+            </p>
+            <p data-lang="en">
+              Under the revised FADP, you have the right at any time to:
+            </p>
+            <ul data-lang="de">
+              <li>Auskunft über Ihre von uns bearbeiteten Daten</li>
+              <li>Berichtigung unrichtiger Daten</li>
+              <li>Löschung Ihrer Daten, soweit keine gesetzlichen Aufbewahrungspflichten entgegenstehen</li>
+              <li>Einschränkung der Bearbeitung</li>
+              <li>Datenherausgabe oder -übertragung</li>
+              <li>Widerruf einer erteilten Einwilligung</li>
+            </ul>
+            <ul data-lang="en">
+              <li>Access to the data we process about you</li>
+              <li>Rectification of incorrect data</li>
+              <li>Deletion of your data, unless statutory retention obligations apply</li>
+              <li>Restriction of processing</li>
+              <li>Data portability</li>
+              <li>Revocation of consent you have given</li>
+            </ul>
+            <p data-lang="de">
+              Zur Ausübung Ihrer Rechte genügt eine formlose Nachricht an <a href="mailto:kontakt@helveticworks.ch">kontakt@helveticworks.ch</a>. Ausserdem haben Sie das Recht, eine Beschwerde beim Eidgenössischen Datenschutz- und Öffentlichkeitsbeauftragten (EDÖB) einzureichen.
+            </p>
+            <p data-lang="en">
+              To exercise your rights, a simple message to <a href="mailto:kontakt@helveticworks.ch">kontakt@helveticworks.ch</a> is sufficient. You also have the right to file a complaint with the Federal Data Protection and Information Commissioner (FDPIC).
+            </p>
+
+            <h2 data-lang="de">Änderungen</h2>
+            <h2 data-lang="en">Changes</h2>
+            <p data-lang="de">
+              Wir behalten uns vor, diese Datenschutzerklärung bei Bedarf anzupassen, um sie an geänderte Rechtslage oder Änderungen unseres Angebots anzupassen. Für Ihren erneuten Besuch gilt dann die aktuelle Fassung.
+            </p>
+            <p data-lang="en">
+              We reserve the right to adapt this privacy statement as necessary to reflect changes in the legal situation or our services. The current version applies to your next visit.
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== AGB =================== -->
+    <div class="page" id="page-agb">
+      <section class="page-header">
+        <div class="container">
+          <div class="eyebrow" data-lang="de">Rechtliches · 03</div>
+          <div class="eyebrow" data-lang="en">Legal · 03</div>
+          <h1 style="margin-top: 2rem;">
+            <span data-lang="de"><em>AGB</em></span>
+            <span data-lang="en"><em>Terms</em></span>
+          </h1>
+          <p class="page-header-intro" data-lang="de">Allgemeine Geschäftsbedingungen für Dienstleistungen von Helvetic Works.</p>
+          <p class="page-header-intro" data-lang="en">General terms and conditions for services provided by Helvetic Works.</p>
+        </div>
+      </section>
+
+      <div class="container">
+        <div class="legal-layout">
+          <aside class="legal-toc">
+            <div class="legal-toc-title" data-lang="de">Auf dieser Seite</div>
+            <div class="legal-toc-title" data-lang="en">On this page</div>
+            <ul>
+              <li><a href="#agb-1" data-lang="de">Geltungsbereich</a><a href="#agb-1" data-lang="en">Scope</a></li>
+              <li><a href="#agb-2" data-lang="de">Vertrag</a><a href="#agb-2" data-lang="en">Contract</a></li>
+              <li><a href="#agb-3" data-lang="de">Leistungen</a><a href="#agb-3" data-lang="en">Services</a></li>
+              <li><a href="#agb-4" data-lang="de">Preise und Zahlung</a><a href="#agb-4" data-lang="en">Prices and payment</a></li>
+              <li><a href="#agb-5" data-lang="de">Mitwirkung</a><a href="#agb-5" data-lang="en">Cooperation</a></li>
+              <li><a href="#agb-6" data-lang="de">Rechte</a><a href="#agb-6" data-lang="en">Rights</a></li>
+              <li><a href="#agb-7" data-lang="de">Haftung</a><a href="#agb-7" data-lang="en">Liability</a></li>
+              <li><a href="#agb-8" data-lang="de">Kündigung</a><a href="#agb-8" data-lang="en">Termination</a></li>
+              <li><a href="#agb-9" data-lang="de">Schlussbestimmungen</a><a href="#agb-9" data-lang="en">Final provisions</a></li>
+            </ul>
+          </aside>
+
+          <div class="legal-content">
+
+            <div class="legal-meta">
+              <span data-lang="de">Stand · April 2026</span>
+              <span data-lang="en">Last updated · April 2026</span>
+              <span data-lang="de">Version 1.0</span>
+              <span data-lang="en">Version 1.0</span>
+            </div>
+
+            <h2 id="agb-1" data-lang="de">1. Geltungsbereich</h2>
+            <h2 id="agb-1" data-lang="en">1. Scope</h2>
+            <p data-lang="de">
+              Diese Allgemeinen Geschäftsbedingungen (nachfolgend "AGB") regeln das Vertragsverhältnis zwischen Helvetic Works (nachfolgend "Anbieter") und dem Kunden (nachfolgend "Kunde") über die Erbringung von Dienstleistungen im Bereich Webdesign, Webentwicklung, Hosting und verwandten Leistungen.
+            </p>
+            <p data-lang="en">
+              These general terms and conditions (hereinafter "Terms") govern the contractual relationship between Helvetic Works (hereinafter "Provider") and the client (hereinafter "Client") regarding the provision of services in the areas of web design, web development, hosting, and related services.
+            </p>
+            <p data-lang="de">
+              Abweichende Bedingungen des Kunden gelten nur, wenn sie der Anbieter schriftlich anerkennt.
+            </p>
+            <p data-lang="en">
+              Conflicting terms of the Client apply only if the Provider acknowledges them in writing.
+            </p>
+
+            <h2 id="agb-2" data-lang="de">2. Vertragsabschluss</h2>
+            <h2 id="agb-2" data-lang="en">2. Conclusion of contract</h2>
+            <p data-lang="de">
+              Offerten des Anbieters sind freibleibend. Der Vertrag kommt mit der schriftlichen Auftragsbestätigung durch den Anbieter oder mit Arbeitsbeginn zustande. Die Annahme einer Offerte durch den Kunden gilt als Vertragsabschluss.
+            </p>
+            <p data-lang="en">
+              The Provider's offers are non-binding. The contract is concluded upon the Provider's written order confirmation or upon commencement of work. Acceptance of an offer by the Client constitutes conclusion of contract.
+            </p>
+
+            <h2 id="agb-3" data-lang="de">3. Leistungsumfang</h2>
+            <h2 id="agb-3" data-lang="en">3. Scope of services</h2>
+            <p data-lang="de">
+              Der Umfang der zu erbringenden Leistungen ergibt sich aus der jeweiligen Offerte bzw. Auftragsbestätigung. Zusätzliche Leistungen, die nicht im ursprünglichen Auftrag enthalten sind, werden separat offeriert und in Rechnung gestellt.
+            </p>
+            <p data-lang="en">
+              The scope of the services to be provided is set out in the respective offer or order confirmation. Additional services not included in the original order will be quoted and invoiced separately.
+            </p>
+            <p data-lang="de">
+              Termine gelten als vereinbart, wenn sie schriftlich bestätigt wurden. Verzögerungen, die auf ausstehende Zulieferungen oder Entscheidungen des Kunden zurückzuführen sind, verlängern vereinbarte Fristen entsprechend.
+            </p>
+            <p data-lang="en">
+              Deadlines are considered agreed once confirmed in writing. Delays caused by pending Client input or decisions extend agreed deadlines accordingly.
+            </p>
+
+            <h2 id="agb-4" data-lang="de">4. Preise und Zahlung</h2>
+            <h2 id="agb-4" data-lang="en">4. Prices and payment</h2>
+            <p data-lang="de">
+              Alle Preise verstehen sich in Schweizer Franken (CHF) und zuzüglich allfälliger Mehrwertsteuer. Die Zahlungsbedingungen werden in der Offerte festgehalten. Sofern nicht anders vereinbart, gelten folgende Zahlungsstufen:
+            </p>
+            <p data-lang="en">
+              All prices are in Swiss francs (CHF) and exclude any applicable value-added tax. Payment terms are stated in the offer. Unless otherwise agreed, the following payment stages apply:
+            </p>
+            <ul data-lang="de">
+              <li>50 % bei Auftragsbestätigung</li>
+              <li>50 % bei Abschluss und Übergabe</li>
+            </ul>
+            <ul data-lang="en">
+              <li>50 % on order confirmation</li>
+              <li>50 % on completion and handover</li>
+            </ul>
+            <p data-lang="de">
+              Rechnungen sind innerhalb von 14 Tagen ab Rechnungsdatum ohne Abzug zur Zahlung fällig. Bei Zahlungsverzug kann der Anbieter Verzugszinsen in gesetzlicher Höhe und Mahngebühren verlangen.
+            </p>
+            <p data-lang="en">
+              Invoices are due for payment within 14 days of the invoice date without deduction. In the event of payment default, the Provider may charge statutory default interest and reminder fees.
+            </p>
+
+            <h2 id="agb-5" data-lang="de">5. Mitwirkung des Kunden</h2>
+            <h2 id="agb-5" data-lang="en">5. Client cooperation</h2>
+            <p data-lang="de">
+              Der Kunde stellt dem Anbieter die für die Auftragserfüllung erforderlichen Informationen, Inhalte und Zugänge rechtzeitig und in geeigneter Form zur Verfügung. Dazu gehören insbesondere Texte, Bilder, Logos, Markenrichtlinien und Zugangsdaten.
+            </p>
+            <p data-lang="en">
+              The Client provides the Provider with the information, content, and access required to fulfil the order in due time and in appropriate form. This includes in particular texts, images, logos, brand guidelines, and access credentials.
+            </p>
+            <p data-lang="de">
+              Der Kunde garantiert, dass er über die erforderlichen Rechte an den von ihm bereitgestellten Inhalten verfügt und stellt den Anbieter von allfälligen Ansprüchen Dritter frei.
+            </p>
+            <p data-lang="en">
+              The Client warrants that they hold the necessary rights to the content they provide and indemnifies the Provider against any third-party claims.
+            </p>
+
+            <h2 id="agb-6" data-lang="de">6. Nutzungsrechte</h2>
+            <h2 id="agb-6" data-lang="en">6. Rights of use</h2>
+            <p data-lang="de">
+              Nach vollständiger Bezahlung erhält der Kunde die Nutzungsrechte an den erstellten Arbeiten im vereinbarten Umfang. Der Quellcode und alle Projektdateien gehen nach Zahlung vollständig in den Besitz des Kunden über.
+            </p>
+            <p data-lang="en">
+              Upon full payment, the Client receives the rights of use for the work produced, within the agreed scope. Source code and all project files become the full property of the Client after payment.
+            </p>
+            <p data-lang="de">
+              Der Anbieter ist berechtigt, die erstellten Arbeiten zu Referenz- und Portfoliozwecken zu verwenden, es sei denn, dies wurde ausdrücklich ausgeschlossen.
+            </p>
+            <p data-lang="en">
+              The Provider is entitled to use completed work for reference and portfolio purposes unless this has been expressly excluded.
+            </p>
+
+            <h2 id="agb-7" data-lang="de">7. Haftung</h2>
+            <h2 id="agb-7" data-lang="en">7. Liability</h2>
+            <p data-lang="de">
+              Der Anbieter haftet für Schäden, die er oder seine Hilfspersonen vorsätzlich oder grobfahrlässig verursachen. Die Haftung für leichte Fahrlässigkeit ist ausgeschlossen, soweit dies gesetzlich zulässig ist.
+            </p>
+            <p data-lang="en">
+              The Provider is liable for damages caused intentionally or by gross negligence by the Provider or its assistants. Liability for ordinary negligence is excluded to the extent permitted by law.
+            </p>
+            <p data-lang="de">
+              Die Haftung ist auf den Auftragswert beschränkt. Eine Haftung für indirekte Schäden, Folgeschäden oder entgangenen Gewinn ist ausgeschlossen.
+            </p>
+            <p data-lang="en">
+              Liability is limited to the order value. Liability for indirect damages, consequential damages, or loss of profit is excluded.
+            </p>
+            <p data-lang="de">
+              Der Anbieter übernimmt keine Haftung für Ausfälle, die ausserhalb seines Einflussbereichs liegen (z. B. Ausfälle von Drittanbietern, höhere Gewalt).
+            </p>
+            <p data-lang="en">
+              The Provider accepts no liability for outages outside its sphere of influence (e.g. third-party provider failures, force majeure).
+            </p>
+
+            <h2 id="agb-8" data-lang="de">8. Kündigung von Hosting- und Wartungsverträgen</h2>
+            <h2 id="agb-8" data-lang="en">8. Termination of hosting and maintenance contracts</h2>
+            <p data-lang="de">
+              Laufende Hosting- und Wartungsverträge können von beiden Parteien mit einer Frist von einem Monat auf das Ende eines Kalendermonats gekündigt werden, sofern nichts anderes vereinbart wurde. Die Kündigung bedarf der Schriftform (E-Mail genügt).
+            </p>
+            <p data-lang="en">
+              Ongoing hosting and maintenance contracts may be terminated by either party with one month's notice to the end of a calendar month, unless otherwise agreed. Termination must be in writing (email suffices).
+            </p>
+            <p data-lang="de">
+              Bereits bezahlte Beiträge werden nicht anteilig zurückerstattet.
+            </p>
+            <p data-lang="en">
+              Fees already paid are not refunded pro rata.
+            </p>
+
+            <h2 id="agb-9" data-lang="de">9. Schlussbestimmungen</h2>
+            <h2 id="agb-9" data-lang="en">9. Final provisions</h2>
+
+            <h3 data-lang="de">Anwendbares Recht und Gerichtsstand</h3>
+            <h3 data-lang="en">Applicable law and place of jurisdiction</h3>
+            <p data-lang="de">
+              Es gilt ausschliesslich schweizerisches Recht unter Ausschluss des UN-Kaufrechts. Gerichtsstand ist Tann ZH, sofern gesetzlich zulässig.
+            </p>
+            <p data-lang="en">
+              Swiss law applies exclusively, to the exclusion of the UN Convention on Contracts for the International Sale of Goods. The place of jurisdiction is Tann ZH, to the extent permitted by law.
+            </p>
+
+            <h3 data-lang="de">Salvatorische Klausel</h3>
+            <h3 data-lang="en">Severability clause</h3>
+            <p data-lang="de">
+              Sollte eine Bestimmung dieser AGB unwirksam sein oder werden, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt. Die unwirksame Bestimmung ist durch eine wirksame zu ersetzen, die dem wirtschaftlichen Zweck der ursprünglichen Bestimmung am nächsten kommt.
+            </p>
+            <p data-lang="en">
+              Should any provision of these Terms be or become invalid, the validity of the remaining provisions remains unaffected. The invalid provision shall be replaced by a valid one that comes closest to the economic purpose of the original provision.
+            </p>
+
+            <h3 data-lang="de">Änderungen der AGB</h3>
+            <h3 data-lang="en">Changes to the Terms</h3>
+            <p data-lang="de">
+              Der Anbieter behält sich vor, diese AGB jederzeit anzupassen. Bei laufenden Verträgen gelten die bei Vertragsabschluss gültigen Bedingungen, es sei denn, der Kunde stimmt einer Änderung ausdrücklich zu.
+            </p>
+            <p data-lang="en">
+              The Provider reserves the right to amend these Terms at any time. For ongoing contracts, the terms applicable at the time of conclusion apply unless the Client expressly agrees to changes.
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>Helvetic Works</h3>
+        <p data-lang="de">Webdesign, Entwicklung und Hosting aus der Region Zürich. Individuelle Websites für Unternehmen, die sich abheben wollen.</p>
+        <p data-lang="en">Web design, development and hosting from the Zürich area. Custom websites for businesses that want to stand out.</p>
+      </div>
+      <div>
+        <h5 data-lang="de">Navigation</h5>
+        <h5 data-lang="en">Navigation</h5>
+        <ul>
+          <li><a data-page="home" data-lang="de">Start</a><a data-page="home" data-lang="en">Home</a></li>
+          <li><a data-page="services" data-lang="de">Leistungen</a><a data-page="services" data-lang="en">Services</a></li>
+          <li><a data-page="contact" data-lang="de">Kontakt</a><a data-page="contact" data-lang="en">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 data-lang="de">Kontakt</h5>
+        <h5 data-lang="en">Contact</h5>
+        <ul>
+          <li><a href="mailto:kontakt@helveticworks.ch">kontakt@helveticworks.ch</a></li>
+          <li><span data-lang="de">Zürich, Schweiz</span><span data-lang="en">Zürich, Switzerland</span></li>
+          <li><span data-lang="de">Mo – Fr, 09 – 18 Uhr</span><span data-lang="en">Mon – Fri, 9am – 6pm</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 Helvetic Works</div>
+      <div style="display: flex; gap: 1.5rem; align-items: center;">
+        <a data-page="impressum" data-lang="de" style="cursor: pointer; opacity: 0.85;">Impressum</a>
+        <a data-page="impressum" data-lang="en" style="cursor: pointer; opacity: 0.85;">Imprint</a>
+        <a data-page="datenschutz" data-lang="de" style="cursor: pointer; opacity: 0.85;">Datenschutz</a>
+        <a data-page="datenschutz" data-lang="en" style="cursor: pointer; opacity: 0.85;">Privacy</a>
+        <a data-page="agb" data-lang="de" style="cursor: pointer; opacity: 0.85;">AGB</a>
+        <a data-page="agb" data-lang="en" style="cursor: pointer; opacity: 0.85;">Terms</a>
+      </div>
+      <div data-lang="de">Made in Switzerland ✦</div>
+      <div data-lang="en">Made in Switzerland ✦</div>
+    </div>
+  </footer>
+
+  <script>
+    // ============================================
+    // LANGUAGE TOGGLE
+    // ============================================
+    (function () {
+      const STORAGE_KEY = 'sv-lang';
+      const DEFAULT_LANG = 'de';
+
+      function applyLang(lang) {
+        document.documentElement.setAttribute('lang', lang);
+        document.querySelectorAll('[data-lang]').forEach((el) => {
+          if (el.getAttribute('data-lang') === lang) {
+            el.removeAttribute('data-lang-hide');
+          } else {
+            el.setAttribute('data-lang-hide', '');
+          }
+        });
+        document.querySelectorAll('.lang-toggle button').forEach((btn) => {
+          btn.classList.toggle('active', btn.getAttribute('data-set-lang') === lang);
+        });
+        document.querySelectorAll('[data-ph-de]').forEach((el) => {
+          el.placeholder = lang === 'de' ? el.getAttribute('data-ph-de') : (el.getAttribute('data-ph-en') || el.getAttribute('data-ph-de'));
+        });
+        try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
+      }
+
+      let saved = DEFAULT_LANG;
+      try { saved = localStorage.getItem(STORAGE_KEY) || DEFAULT_LANG; } catch (e) {}
+      applyLang(saved);
+
+      document.querySelectorAll('.lang-toggle button').forEach((btn) => {
+        btn.addEventListener('click', () => applyLang(btn.getAttribute('data-set-lang')));
+      });
+    })();
+
+    // ============================================
+    // PAGE ROUTING (in-page "navigation")
+    // ============================================
+    function showPage(pageName) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      const target = document.getElementById('page-' + pageName);
+      if (target) target.classList.add('active');
+      document.querySelectorAll('.nav-links a').forEach(a => {
+        a.classList.toggle('active', a.getAttribute('data-page') === pageName);
+      });
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    document.addEventListener('click', (e) => {
+      // Handle in-page anchor links inside legal pages (with duplicate DE/EN IDs)
+      const anchor = e.target.closest('a[href^="#"]');
+      if (anchor && !anchor.hasAttribute('data-page')) {
+        const id = anchor.getAttribute('href').slice(1);
+        if (id) {
+          e.preventDefault();
+          const targets = document.querySelectorAll('#' + id + ', [id="' + id + '"]');
+          // Find first visible target
+          for (const t of targets) {
+            if (t.offsetParent !== null) {
+              t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              break;
+            }
+          }
+          return;
+        }
+      }
+
+      const trigger = e.target.closest('[data-page]');
+      if (trigger) {
+        e.preventDefault();
+        showPage(trigger.getAttribute('data-page'));
+      }
+    });
+
+    // ============================================
+    // FAQ ACCORDION
+    // ============================================
+    document.querySelectorAll('.faq-item').forEach((item) => {
+      item.addEventListener('click', () => item.classList.toggle('open'));
+    });
+
+    // ============================================
+    // CONTACT FORM (Formspree)
+    // ============================================
+    (function () {
+      const form = document.getElementById('inquiry-form');
+      if (!form) return;
+      const btn = form.querySelector('button[type="submit"]');
+      const successBox = document.getElementById('form-success');
+      const errorBox = document.getElementById('form-error');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Reset any previous status
+        successBox.classList.remove('show');
+        errorBox.classList.remove('show');
+
+        // Browser-native validation first
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        // IMPORTANT: build FormData BEFORE disabling fields.
+        // Disabled fields are excluded from FormData, which would send an empty request.
+        const data = new FormData(form);
+
+        // Loading state
+        btn.classList.add('is-loading');
+        btn.disabled = true;
+        form.querySelectorAll('input, select, textarea').forEach(el => el.disabled = true);
+
+        try {
+          // DIAGNOSTIC: log exactly what we're sending
+          console.log('=== FORM SUBMISSION DEBUG ===');
+          console.log('Form action:', form.action);
+          console.log('Form method:', form.method);
+          const entries = [];
+          for (const [key, value] of data.entries()) {
+            entries.push({key, value, valueType: typeof value, valueLength: value.length});
+          }
+          console.log('FormData entries:', entries);
+          console.log('FormData entry count:', entries.length);
+          console.log('=============================');
+
+          const res = await fetch(form.action, {
+            method: 'POST',
+            body: data,
+            headers: {
+              'Accept': 'application/json'
+            }
+          });
+
+          if (res.ok) {
+            form.reset();
+            successBox.classList.add('show');
+            successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          } else {
+            // Try to surface a specific error message from Formspree if present
+            let msg = '';
+            try {
+              const j = await res.json();
+              if (j && j.errors && j.errors.length) {
+                msg = j.errors.map(x => x.message).join(' · ');
+              }
+              console.error('Formspree response:', j);
+            } catch (_) {}
+            throw new Error(msg || ('HTTP ' + res.status));
+          }
+        } catch (err) {
+          errorBox.classList.add('show');
+          errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          console.error('Form submission failed:', err);
+        } finally {
+          btn.classList.remove('is-loading');
+          btn.disabled = false;
+          form.querySelectorAll('input, select, textarea').forEach(el => el.disabled = false);
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>
